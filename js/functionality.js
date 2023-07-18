@@ -30,10 +30,10 @@ let monthMenu = "January";
 let yearMenu = "2022";
 let revenueList = [];
 let expenseList = [];
-let dataLocation = null;
+
 
 const clearData = () => {
-    dataLocation = null;
+    document.getElementById("dataLocation").innerHTML = "No data";
     revenueList = null;
     expenseList = null;
     localStorage.removeItem("csvData");
@@ -100,10 +100,10 @@ const getData = () => {
         }
 
         if (localStorage.getItem("csvData")) {
-            dataLocation = "local";
+            document.getElementById("dataLocation").innerHTML = "Data stored locally";
             let data = JSON.parse(localStorage.getItem("csvData"));
             for (let i = 0; i < data.length; i++) {
-                if (year + "-" + month + ":" + props.userEmail == data[i].id) {
+                if (year + "-" + month == data[i].id) {
                     console.log("We are building from local storage JSON.stringify(data[i].monthYear): " + JSON.stringify(data[i].monthYear));
                     buildObj(data[i].monthYear);
                 }
@@ -131,7 +131,7 @@ const buildObjects = (temp) => {
         let originalDate = prepLine[0];
         originalDate = originalDate.substring(1, originalDate.length - 1);
         originalDate = originalDate.substring(6, originalDate.length) + "-" + originalDate.substring(0, 2);
-        let id = originalDate + ":" + props.userEmail;
+        let id = originalDate;
         let originalPrice = prepLine[1];
         if (originalPrice) {
             let amount = originalPrice.substring(1, (originalPrice.length - 1));
@@ -191,32 +191,39 @@ const buildObjects = (temp) => {
     localStorage.setItem("csvData", JSON.stringify(tempObj));
     setTimeout(() => {
         if (localStorage.getItem("csvData")) {
-            props.showAlert("CSV file saved to local storage.", "success");
+            document.getElementById("dataLocation").innerHTML = "data saved locally";
         } else {
-            props.showAlert("That did not save to local storage.", "danger");
+            document.getElementById("dataLocation").innerHTML = "No data saved";
         }
     }, 500)
     getData();
     return false;
 }
-//START FILE READER
-const fileReader = new FileReader();
 
-const handleOnChange = (e) => {
-    /* const e = document.getElementById("csvFileInput");*/
-    console.log("e.target: " + e.target);
-    //  file = e.target.files[0];
-    file = document.getElementById("csvFileInput").value;
+//START FILE READER
+//const fileReader = new FileReader();
+const handleOnChange = () => {
+
+    file = document.getElementById("csvFileInput").files[0];
+
+    console.log("handleOnChange file: " + file);
     if (file) {
+
+        console.log("file: " + file);
         importDisable = false;
+    } else {
+        console.log("file FAIL: " + file);
     }
 };
-const handleOnSubmit = (e, type) => {
-    e.preventDefault();
-    localStorage.setItem("csvData", "");
+const handleOnSubmit = (type) => {
+
+
+    console.log("HANDLE ON SUBMIT file: " + file);
     if (file) {
-        fileReader.onload = function (event) {
-            const csvOutput = event.target.result;
+        var reader = new FileReader();
+        reader.readAsText(file, "UTF-8");
+        reader.onload = function (evt) {
+            let csvOutput = evt.target.result;
 
             if (type === "csv") {
                 buildObjects(csvOutput);
@@ -226,11 +233,37 @@ const handleOnSubmit = (e, type) => {
                 getData();
             }
 
-        };
 
-        fileReader.readAsText(file);
+        }
+        reader.onerror = function (evt) {
+            console.log("error csvOutput: " + csvOutput)
+        }
+    } else {
+        console.log("error file: " + file);
     }
-    document.querySelector("input[type='file']").value = "";
+    /* console.log("handleOnSubmit: " + e);
+     e.preventDefault();
+     localStorage.setItem("csvData", "");
+     if (file) {
+         fileReader.onload = function (event) {
+             const csvOutput = event.target.result;
+             console.log("csvOutput: " + csvOutput);
+ 
+             if (type === "csv") {
+                 buildObjects(csvOutput);
+             } else {
+                 let tempObj = JSON.stringify(JSON.parse(csvOutput));
+                 localStorage.setItem("csvData", tempObj);
+                 getData();
+             }
+ 
+         };
+ 
+         fileReader.readAsText(file);
+     } else {
+         console.log("file was no good: " + file);
+     }
+     document.querySelector("input[type='file']").value = "";*/
     importDisable = true;
 };
 
