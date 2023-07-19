@@ -1,22 +1,3 @@
-/*var options = {
-    chart: {
-        type: 'bar'
-    },
-
-    series: [{
-        name: 'sales',
-        data: [30, 40, 45, 50, 49, 60, 70, 91, 125]
-    }],
-
-    xaxis: {
-        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
-    }
-};*/
-
-
-
-/*START FUNCTIONALITY*/
-
 
 
 let file;
@@ -43,6 +24,153 @@ let dataBTotal = 0;
 let initialAmount = 0;
 let aTotal = 0;
 let bTotal = 0;
+
+let amounts = [Number(dataATotal), Number(dataBTotal)];
+let labels = [title + " List A", title + " List B"];
+
+/*var options = {
+    chart: {
+        type: 'bar'
+    },
+
+    series: [{
+        name: 'sales',
+        data: [30, 40, 45, 50, 49, 60, 70, 91, 125]
+    }],
+
+    xaxis: {
+        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
+    }
+};*/
+
+let findHeight = 100;
+
+const width = window.innerWidth;
+let legendWidth = 500;
+
+if (width < 768) {
+    findHeight = 250;
+    legendWidth = 435;
+} else {
+    findHeight = 100;
+
+}
+
+/*let thisState = {
+    series: [],
+    total: 0, 
+    dataLabels: {
+        enabled: false,
+    },
+    options: {
+
+        chart: {
+            type: 'donut',
+            width: '100%',
+        },
+        legend: {
+            show: true,
+            showForSingleSeries: false,
+            showForNullSeries: true,
+            showForZeroSeries: true,
+            position: 'bottom',
+            horizontalAlign: 'left',
+            floating: false,
+            formatter: undefined,
+            inverseOrder: false,
+            width: legendWidth,
+            height: findHeight,
+            tooltipHoverFormatter: undefined,
+            customLegendItems: [],
+            offsetX: 15,
+            offsetY: 0,
+            labels: {
+                colors: undefined,
+                useSeriesColors: false
+            },
+            markers: {
+                width: 12,
+                height: 12,
+                strokeWidth: 0,
+                strokeColor: '#fff',
+                fillColors: undefined,
+                radius: 12,
+                customHTML: undefined,
+                onClick: undefined,
+                offsetX: 0,
+                offsetY: 0
+            },
+            itemMargin: {
+                horizontal: 2,
+                vertical: 0
+            },
+            onItemClick: {
+                toggleDataSeries: true
+            },
+            onItemHover: {
+                highlightDataSeries: true
+            },
+        },
+        labels: [],
+        plotOptions: {
+            bar: {
+                dataLabels: {
+                    position: 'bottom'
+                }
+            }
+        },
+        responsive: [{
+            breakpoint: 480,
+            options: {
+                chart: {
+                    width: 300,
+                    horizontalAlign: 'left',
+                    offsetX: 0,
+                    offsetY: 0,
+
+                },
+                legend: {
+                    width: 300,
+                    position: 'bottom',
+                    horizontalAlign: 'left',
+                    offsetX: 0,
+                    offsetY: 0,
+                }
+            }
+        }],
+        plotOptions: {
+            pie: {
+                customScale: 1,
+                labels: false
+            }
+        }
+    },
+};*/
+
+var options = {
+    series: [],
+    total: 0,
+    chart: {
+        type: 'donut',
+    },
+    responsive: [{
+        breakpoint: 480,
+        options: {
+            chart: {
+                width: "auto"
+            },
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }]
+};
+
+
+
+/*START FUNCTIONALITY*/
+
+
 
 const clearData = () => {
     document.getElementById("dataLocation").innerHTML = "No data";
@@ -329,7 +457,7 @@ const buildListAmounts = (list) => {
 
 const viewData = (viewFunc) => {
     /*start analyze vars*/
-    dataA = [], dataATotal = 0, dataB = [], dataBTotal = 0, initialAmount = 0, aTotal = 0, bTotal = 0;
+    // dataA = [], dataATotal = 0, dataB = [], dataBTotal = 0, initialAmount = 0, aTotal = 0, bTotal = 0;
     document.getElementById("dataB").innerHTML = "";
     document.getElementById("dataA").innerHTML = "";
     document.getElementById("initialAmount").innerHTML = "";
@@ -355,13 +483,113 @@ const viewData = (viewFunc) => {
 
 }
 
+
+
+
+
+
+
+//DATA
+
+
+updatePie = () => {
+    let tempTotal = 0;
+    console.log("amounts: " + amounts);
+    for (let i = 0; i < amounts.length; i++) {
+        tempTotal = tempTotal + amounts[i];
+    }
+    options.total = tempTotal;
+    options.series = amounts;
+
+    console.log("JSON.stringify(options): " + JSON.stringify(options));
+    var chart = new ApexCharts(document.querySelector("#chart"), options);
+
+    chart.render();
+}
+
+
+
+const seperateData = (itemName, amount, initialList) => {
+    let title = "income";
+    if (title !== "income") {
+        title = "expense"
+    }
+    let tempB = dataB;
+    let tempA = dataA;
+    let tempData = [];
+    let tempMerge = [];
+    let tempATotal = 0;
+    let tempBTotal = 0;
+    if (initialList === "A") {
+        for (let i = 0; i < tempA.length; i++) {
+            if (itemName !== tempA[i].itemName) {
+                tempData.push(tempA[i]);
+                tempATotal = tempATotal + Number(tempA[i].amount)
+            }
+        }
+        tempMerge = [...dataB, { itemName, amount }];
+        dataA = tempData;
+        dataB = tempMerge;
+
+        aTotal = tempATotal;
+        bTotal = initialAmount - tempATotal;
+
+    } else {
+        for (let i = 0; i < tempB.length; i++) {
+            if (itemName !== tempB[i].itemName) {
+                tempData.push(tempB[i])
+            }
+        }
+        tempMerge = [...dataA, { itemName, amount }];
+        dataA = tempMerge;
+        dataB = tempData;
+    }
+
+    let dataB_HTML = "";
+    for (let i = 0; i < dataB.length; i++) {
+        let funcB = ` onClick="javascript:seperateData('${dataB[i].itemName}',${dataB[i].amount},'B')" `;
+        dataB_HTML = dataB_HTML + "<button type='button' " + funcB + "  class='list-group-item list-group-item-action'>" + dataB[i].itemName + " : $" + dataB[i].amount + "</button>";
+    }
+
+    document.getElementById("dataB").innerHTML = dataB_HTML;
+
+    let dataA_HTML = "";
+    for (let i = 0; i < dataA.length; i++) {
+        let funcA = ` onClick="javascript:seperateData('${dataA[i].itemName}',${dataA[i].amount}, 'A')" `;
+        dataA_HTML = dataA_HTML + "<button type='button' " + funcA + "  class='list-group-item list-group-item-action'>" + dataA[i].itemName + " : $" + dataA[i].amount + "</button>";
+    }
+
+    document.getElementById("dataA").innerHTML = dataA_HTML;
+
+    //START A
+    dataA = tempData;
+    let tempDataATotal = 0;
+    for (let i = 0; i < tempData.length; i++) {
+        tempDataATotal = tempDataATotal + Number(tempData[i].amount)
+    }
+    dataATotal = tempDataATotal;
+    document.getElementById("aTotal").innerHTML = dataATotal;
+    sessionStorage.setItem(title + "A", tempDataATotal);
+    ///START B
+    dataB = tempMerge;
+    let tempDataBTotal = 0;
+    for (let i = 0; i < tempMerge.length; i++) {
+        tempDataBTotal = tempDataBTotal + Number(tempMerge[i].amount);
+    }
+    dataBTotal = tempDataBTotal;
+    document.getElementById("bTotal").innerHTML = dataBTotal;
+    sessionStorage.setItem(title + "B", dataBTotal);
+    amounts = [Number(dataATotal), Number(dataBTotal)];
+    labels = [title + " List A", title + " List B"];
+    updatePie();
+}
+
+
+
+
+
+
 /*END FUNCTIONALITY*/
 
 
 
-
-
-
-/*var chart = new ApexCharts(document.querySelector("#chart"), options);
-
-chart.render();*/
