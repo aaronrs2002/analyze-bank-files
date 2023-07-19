@@ -22,8 +22,11 @@
 <body>
   <div class="container">
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-6">
         <h3 id="dataLocation">No Data</h3>
+      </div>
+      <div class="col-md-6">
+        <h3 class="capitalize" id="viewFunction"></h3>
       </div>
       <div class="col-md-6">
         <select name="menu-select-year" class="form-control" onChange="getData()">
@@ -56,6 +59,62 @@
         <button class="btn btn-danger w-100" onClick="clearData()">Clear Data</button>
       </div>
 
+      <div class="col-md-12 hide" id="functionBts">
+        <div class="btn-group block">
+          <button class="btn btn-primary active" data-view="expenses" onClick="viewData('expenses')">Expenses</button>
+          <button class="btn btn-primary" data-view="income" onClick="viewData('income')">Income</button>
+
+        </div>
+      </div>
+
+
+
+
+      <div class="row mb-5 hide" id="displayPanel">
+        <div class="col-md-4">
+          <h3>List A</h3>
+
+          <ul class="list-group" id="dataA">
+            <!-- {dataA !== [] ? dataA.map((item, i) => {
+                    return (<button key={i} type="button" onClick={() => seperateData(item.itemName, item.amount, "A")} class="list-group-item list-group-item-action">{item.itemName + " : $" + item.amount}</button>)
+                }) : null}-->
+          </ul>
+          <ul class="list-unstyled">
+            <!--{dataBTotal !== 0 ? <li>Total: ${aTotal}</li> : null}
+                {initialAmount ? <li>Initial Amount: ${initialAmount} </li> : null}-->
+            <li>Total: <span id="atotal"></span></li>
+            <li>Initial Amount: $<span id="initialAmount"></span></li>
+          </ul>
+
+        </div>
+        <div class="col-md-4">
+          <h3>List B</h3>
+          <ul class="list-group" id="dataB">
+
+            <!-- {dataB.length > 0 ? dataB.map((item, i) => {
+                    return (<button key={i} type="button" onClick={() => seperateData(item.itemName, item.amount, "B")} class="list-group-item list-group-item-action">{item.itemName + " : $" + item.amount}</button>)
+                }) : null}-->
+
+          </ul>
+          <ul class="list-unstyled">
+            <li>Total: $<span id="bTotal"></span></li>
+
+          </ul>
+
+        </div>
+        <div class="col-md-4">
+          <!--   {Number(dataBTotal) && Number(dataATotal) ?
+          <MonthIncomeItemized amounts={[Number(dataATotal), Number(dataBTotal)]} labels={[props.title + " List A" ,
+            props.title + " List B" ]} /> : null}-->
+        </div>
+      </div>
+
+
+
+
+
+
+
       <div class="col-md-12">
         <div id="chart"></div>
       </div>
@@ -65,9 +124,7 @@
 </body>
 <script src='https://cdn.jsdelivr.net/npm/apexcharts'></script>
 <script src="js/DateSelector.js"></script>
-<script src="js/functionality.js">
-
-
-</script>
+<script src="js/functionality.js"></script>
+<script src="js/analyze.js"></script>
 
 </html>

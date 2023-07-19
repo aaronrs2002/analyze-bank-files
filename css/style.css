@@ -4,7 +4,93 @@ body {
     font-family: Roboto, sans-serif;
 }
 
+.container,
+.container-fluid {
+    padding-top: 30px;
+}
+
+.capitalize {
+    text-transform: capitalize;
+}
+
+[data-chart] {
+    background-color: #f8f8f8;
+    border-radius: 5px;
+}
+
 #chart {
     max-width: 650px;
     margin: 35px auto;
+}
+
+.error {
+    border: #ff0000 solid 1px;
+}
+
+.hide {
+    display: none;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.btn.active {
+    color: yellow !important;
+}
+
+.block,
+.btn-group.block {
+    width: 100%;
+    padding: 0px
+}
+
+
+/*START PRINT MEDIA*/
+.printOnly {
+    display: none;
+}
+
+
+@media print {
+
+    footer,
+    nav,
+    .noPrint {
+        display: none;
+    }
+
+    .printOnly {
+        display: block;
+    }
+
+}
+
+/*END PRINT MEDIA*/
+
+.mobileOnly {
+    display: none;
+}
+
+.desktopOnly {
+    display: block;
+}
+
+.printOnly {
+    display: none;
+}
+
+@media (max-width: 768px) {
+
+    .mobileOnly {
+        display: block;
+    }
+
+    .desktopOnly {
+        display: none;
+    }
+
+
+
+
 }

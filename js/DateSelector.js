@@ -8,7 +8,11 @@ for (let i = year; i < (parseInt(year) + 3); i++) {
 }
 document.querySelector("select[name='menu-select-year']").innerHTML = years;
 for (let i = 0; i < months.length; i++) {
-    monthList = monthList + "<option value='" + months[i] + "'>" + months[i] + "</option>";
+    let value = i + 1;
+    if (value < 10) {
+        value = "0" + value;
+    }
+    monthList = monthList + "<option value='" + value + "'>" + months[i] + "</option>";
 }
 document.querySelector("select[name='menu-select-month']").innerHTML = monthList;
 

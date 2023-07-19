@@ -1,4 +1,4 @@
-var options = {
+/*var options = {
     chart: {
         type: 'bar'
     },
@@ -11,7 +11,7 @@ var options = {
     xaxis: {
         categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
     }
-};
+};*/
 
 
 
@@ -20,20 +20,26 @@ var options = {
 
 
 let file;
-//let [panel, setPanel] = useState("importCSV");
+
+
+
 let importDisable = true;
 let incomeLabels = [];
 let expenseLabels = [];
 let expenseAmounts = [];
 let incomeAmounts = [];
-let monthMenu = "January";
+let monthMenu = "01";
 let yearMenu = "2022";
 let revenueList = [];
 let expenseList = [];
 
+let list = expenseList;
 
 const clearData = () => {
     document.getElementById("dataLocation").innerHTML = "No data";
+    document.getElementById("functionBts").classList.add("hide");
+    document.getElementById("viewFunction").innerHTML = "";
+    document.getElementById("displayPanel").classList.add("hide");
     revenueList = null;
     expenseList = null;
     localStorage.removeItem("csvData");
@@ -66,58 +72,63 @@ const applyValues = () => {
 }
 
 const getData = () => {
+
     const year = document.querySelector("select[name='menu-select-year']").value;
     const month = document.querySelector("select[name='menu-select-month']").value;
     revenueList = null;
     expenseList = null;
-    setTimeout(() => {
 
 
-        monthMenu = month;
-        yearMenu = year;
-        const buildObj = (obj) => {
-            revenueList = [...obj[0].income];
-            expenseList = [...obj[0].expenses];
-            applyValues();
-            let tempIncomeLabels = [];
-            let tempIncomeAmounts = [];
-            for (let i = 0; i < obj[0].income.length; i++) {
-                tempIncomeLabels.push(obj[0].income[i].itemName);
-                tempIncomeAmounts.push(Number(obj[0].income[i].amount));
-            }
-            incomeLabels = tempIncomeLabels;
-            incomeAmounts = tempIncomeAmounts;
-            let tempExpenseLabels = [];
-            let tempExpenseAmounts = [];
-            for (let i = 0; i < obj[0].expenses.length; i++) {
-                tempExpenseLabels.push(obj[0].expenses[i].itemName);
-                tempExpenseAmounts.push(Number(obj[0].expenses[i].amount));
-            }
-            expenseLabels = tempExpenseLabels;
-            expenseAmounts = tempExpenseAmounts;
-            sessionStorage.setItem("expenseAmounts", JSON.stringify(tempExpenseAmounts));
-            return false;
+
+
+    const buildObj = (obj) => {
+        revenueList = [...obj[0].income];
+        expenseList = [...obj[0].expenses];
+        applyValues();
+        let tempIncomeLabels = [];
+        let tempIncomeAmounts = [];
+        for (let i = 0; i < obj[0].income.length; i++) {
+            tempIncomeLabels.push(obj[0].income[i].itemName);
+            tempIncomeAmounts.push(Number(obj[0].income[i].amount));
         }
-
-        if (localStorage.getItem("csvData")) {
-            document.getElementById("dataLocation").innerHTML = "Data stored locally";
-            let data = JSON.parse(localStorage.getItem("csvData"));
-            for (let i = 0; i < data.length; i++) {
-                if (year + "-" + month == data[i].id) {
-                    console.log("We are building from local storage JSON.stringify(data[i].monthYear): " + JSON.stringify(data[i].monthYear));
-                    buildObj(data[i].monthYear);
-                }
-            }
-            return false;
+        incomeLabels = tempIncomeLabels;
+        incomeAmounts = tempIncomeAmounts;
+        let tempExpenseLabels = [];
+        let tempExpenseAmounts = [];
+        for (let i = 0; i < obj[0].expenses.length; i++) {
+            tempExpenseLabels.push(obj[0].expenses[i].itemName);
+            tempExpenseAmounts.push(Number(obj[0].expenses[i].amount));
         }
+        expenseLabels = tempExpenseLabels;
+        expenseAmounts = tempExpenseAmounts;
+        sessionStorage.setItem("expenseAmounts", JSON.stringify(tempExpenseAmounts));
+        return false;
+    }
 
-    }, 2000);
+    if (localStorage.getItem("csvData")) {
+        document.getElementById("dataLocation").innerHTML = "Data stored locally";
+        document.getElementById("functionBts").classList.remove("hide");
+        document.getElementById("viewFunction").innerHTML = "Expenses";
+        document.getElementById("displayPanel").classList.remove("hide");
+
+        let data = JSON.parse(localStorage.getItem("csvData"));
+
+        for (let i = 0; i < data.length; i++) {
+            if (year + "-" + month == data[i].id) {
+                buildObj(data[i].monthYear);
+            }
+        }
+        return false;
+    }
+
+
     return false;
 
 }
 
 
 const buildObjects = (temp) => {
+    //console.log("FROM buildObjects: JSON.stringify(temp): " + JSON.stringify(temp));
     let tempObj = [];
     let tempIncome = [];
     let tempExpenses = [];
@@ -191,11 +202,18 @@ const buildObjects = (temp) => {
     localStorage.setItem("csvData", JSON.stringify(tempObj));
     setTimeout(() => {
         if (localStorage.getItem("csvData")) {
-            document.getElementById("dataLocation").innerHTML = "data saved locally";
+            document.getElementById("dataLocation").innerHTML = "data stored locally";
+            document.getElementById("functionBts").classList.remove("hide");
+            document.getElementById("viewFunction").innerHTML = "Expenses";
+            document.getElementById("displayPanel").classList.remove("hide");
         } else {
             document.getElementById("dataLocation").innerHTML = "No data saved";
+            document.getElementById("functionBts").classList.add("hide");
+            document.getElementById("displayPanel").classList.add("hide");
+            document.getElementById("viewFunction").innerHTML = "";
         }
-    }, 500)
+    }, 500);
+
     getData();
     return false;
 }
@@ -241,31 +259,78 @@ const handleOnSubmit = (type) => {
     } else {
         console.log("error file: " + file);
     }
-    /* console.log("handleOnSubmit: " + e);
-     e.preventDefault();
-     localStorage.setItem("csvData", "");
-     if (file) {
-         fileReader.onload = function (event) {
-             const csvOutput = event.target.result;
-             console.log("csvOutput: " + csvOutput);
- 
-             if (type === "csv") {
-                 buildObjects(csvOutput);
-             } else {
-                 let tempObj = JSON.stringify(JSON.parse(csvOutput));
-                 localStorage.setItem("csvData", tempObj);
-                 getData();
-             }
- 
-         };
- 
-         fileReader.readAsText(file);
-     } else {
-         console.log("file was no good: " + file);
-     }
-     document.querySelector("input[type='file']").value = "";*/
     importDisable = true;
 };
+
+
+
+const buildListAmounts = (list) => {
+
+    if (list.length > 0) {
+
+        console.log("JSON.stringify(list): " + JSON.stringify(list));
+
+
+
+        let theList = list;
+        let tempList = [];
+        let tempLabels = [];
+        let tempAmounts = [];
+
+        for (let i = 0; i < theList.length; i++) {
+            tempLabels.push(theList[i].itemName);
+            tempAmounts.push(theList[i].amount);
+        }
+
+
+
+
+        for (let i = 0; i < tempLabels.length; i++) {
+            tempList.push({ itemName: tempLabels[i], amount: tempAmounts[i] });
+        }
+        dataA = theList;
+
+        let dataA_HTML = "";
+        for (let i = 0; i < dataA.length; i++) {
+            dataA_HTML = dataA_HTML + "<button key={i} type='button' onClick='() => seperateData(item.itemName, item.amount, 'A')' class='list-group-item list-group-item-action'>" + dataA[i].itemName + " : $" + dataA[i].amount + "</button>";
+        }
+
+        document.getElementById("dataA").innerHTML = dataA_HTML
+
+
+
+        let tempInitialAmount = 0;
+        for (let i = 0; i < theList.length; i++) {
+            tempInitialAmount = tempInitialAmount + Number(theList[i].amount);
+        }
+
+        initialAmount = tempInitialAmount;
+        document.getElementById("initialAmount").innerHTML = initialAmount;
+
+    }
+    document.getElementById("displayPanel").classList.remove("hide");
+}
+
+
+
+
+
+const viewData = (viewFunc) => {
+    if (viewFunc === "expenses") {
+        list = expenseList;
+    } else {
+        list = revenueList;
+    }
+    document.getElementById("viewFunction").innerHTML = viewFunc;
+    [].forEach.call(document.querySelectorAll("button.btn[data-view]"), (e) => {
+        e.classList.remove("active");
+    })
+    document.querySelector("button.btn[data-view='" + viewFunc + "']").classList.add("active");
+
+    console.log("list: " + JSON.stringify(list));
+    buildListAmounts(list);
+
+}
 
 /*END FUNCTIONALITY*/
 
@@ -274,6 +339,6 @@ const handleOnSubmit = (type) => {
 
 
 
-var chart = new ApexCharts(document.querySelector("#chart"), options);
+/*var chart = new ApexCharts(document.querySelector("#chart"), options);
 
-chart.render();
+chart.render();*/
