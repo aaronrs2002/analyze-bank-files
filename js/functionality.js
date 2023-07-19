@@ -382,8 +382,11 @@ const seperateData = (itemName, amount, initialList) => {
     document.getElementById("bTotal").innerHTML = dataBTotal;
     sessionStorage.setItem(title + "B", dataBTotal);
     amounts = [Number(dataATotal), Number(dataBTotal)];
+    document.getElementById("chart").innerHTML = "";
 
     updatePie();
+
+
 }
 /*END FUNCTIONALITY*/
 
