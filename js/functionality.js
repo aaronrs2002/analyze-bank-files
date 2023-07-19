@@ -36,6 +36,7 @@ var options = {
     chart: {
         type: 'donut',
     },
+    labels: [],
     responsive: [{
         breakpoint: 480,
         options: {
@@ -63,6 +64,14 @@ const clearData = () => {
     dataA = [], dataATotal = 0, dataB = [], dataBTotal = 0, initialAmount = 0, aTotal = 0, bTotal = 0;
 }
 
+const prepForNewData = () => {
+    const idList = ["dataA", "dataB", "aTotal", "initialAmount", "bTotal"];
+    for (let i = 0; i < idList.length; i++) {
+        document.getElementById(idList[i]).innerHTML = "";
+    }
+    dataA = [], dataATotal = 0, dataB = [], dataBTotal = 0, initialAmount = 0, aTotal = 0, bTotal = 0, amounts = [];
+}
+
 const applyValues = () => {
     setTimeout(() => {//THE INPUT FIELDS NEED A FEW MILLI SECONDS TO BUILD BEFORE YOU PUT THE VALUES IN./
         let ready = false;
@@ -88,6 +97,7 @@ const applyValues = () => {
 }
 
 const getData = () => {
+    prepForNewData();
     const year = document.querySelector("select[name='menu-select-year']").value;
     const month = document.querySelector("select[name='menu-select-month']").value;
     revenueList = null;
@@ -277,11 +287,7 @@ const buildListAmounts = (list) => {
 }
 
 const viewData = (viewFunc) => {
-    document.getElementById("dataB").innerHTML = "";
-    document.getElementById("dataA").innerHTML = "";
-    document.getElementById("initialAmount").innerHTML = "";
-    document.getElementById("aTotal").innerHTML = "";
-    document.getElementById("bTotal").innerHTML = "";
+    prepForNewData();
     if (viewFunc === "expenses") {
         list = expenseList;
         title = "expense";
@@ -289,6 +295,8 @@ const viewData = (viewFunc) => {
         list = revenueList;
         title = "income";
     }
+
+    options.labels = [title + " List A", title + " List B"];
     document.getElementById("viewFunction").innerHTML = viewFunc;
     [].forEach.call(document.querySelectorAll("button.btn[data-view]"), (e) => {
         e.classList.remove("active");
@@ -310,10 +318,6 @@ updatePie = () => {
 }
 
 const seperateData = (itemName, amount, initialList) => {
-    let title = "income";
-    if (title !== "income") {
-        title = "expense"
-    }
     let tempB = dataB;
     let tempA = dataA;
     let tempData = [];
@@ -375,7 +379,7 @@ const seperateData = (itemName, amount, initialList) => {
     document.getElementById("bTotal").innerHTML = dataBTotal;
     sessionStorage.setItem(title + "B", dataBTotal);
     amounts = [Number(dataATotal), Number(dataBTotal)];
-    labels = [title + " List A", title + " List B"];
+
     updatePie();
 }
 /*END FUNCTIONALITY*/
