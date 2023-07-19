@@ -308,7 +308,7 @@ const viewData = (viewFunc) => {
     buildListAmounts(list);
 }
 
-updatePie = () => {
+/*  updatePie = () => {
     let tempTotal = 0;
     console.log("amounts: " + amounts);
     for (let i = 0; i < amounts.length; i++) {
@@ -318,7 +318,7 @@ updatePie = () => {
     options.series = amounts;
     var chart = new ApexCharts(document.querySelector("#chart"), options);
     chart.render();
-}
+}*/
 
 const seperateData = (itemName, amount, initialList) => {
     let tempB = dataB;
@@ -384,9 +384,12 @@ const seperateData = (itemName, amount, initialList) => {
     amounts = [Number(dataATotal), Number(dataBTotal)];
     document.getElementById("chart").innerHTML = "";
 
-    updatePie();
+    // updatePie();
 
-
+    options.total = parseInt(dataATotal) + parseInt(dataBTotal);
+    options.series = amounts;
+    var chart = new ApexCharts(document.querySelector("#chart"), options);
+    chart.render();
 }
 /*END FUNCTIONALITY*/
 
