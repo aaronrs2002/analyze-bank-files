@@ -52,6 +52,9 @@ var options = {
 
 /*START FUNCTIONALITY*/
 const clearData = () => {
+    [].forEach.call(document.querySelectorAll("data-view"), (e) => {
+        e.classList.remove("active");
+    });
     document.getElementById("dataLocation").innerHTML = "No data";
     document.getElementById("functionBts").classList.add("hide");
     document.getElementById("viewFunction").innerHTML = "";
@@ -128,7 +131,7 @@ const getData = () => {
     if (localStorage.getItem("csvData")) {
         document.getElementById("dataLocation").innerHTML = "Data stored locally";
         document.getElementById("functionBts").classList.remove("hide");
-        document.getElementById("viewFunction").innerHTML = "Expenses";
+        document.getElementById("viewFunction").innerHTML = "Select Expenses or Income";
         document.getElementById("displayPanel").classList.remove("hide");
         let data = JSON.parse(localStorage.getItem("csvData"));
         for (let i = 0; i < data.length; i++) {
@@ -210,7 +213,7 @@ const buildObjects = (temp) => {
         if (localStorage.getItem("csvData")) {
             document.getElementById("dataLocation").innerHTML = "data stored locally";
             document.getElementById("functionBts").classList.remove("hide");
-            document.getElementById("viewFunction").innerHTML = "Expenses";
+            document.getElementById("viewFunction").innerHTML = "Select Expenses or Income";
             document.getElementById("displayPanel").classList.remove("hide");
         } else {
             document.getElementById("dataLocation").innerHTML = "No data saved";
