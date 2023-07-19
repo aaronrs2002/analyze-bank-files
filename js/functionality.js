@@ -1,9 +1,5 @@
-
-
 let file;
 let title;
-
-
 let importDisable = true;
 let incomeLabels = [];
 let expenseLabels = [];
@@ -13,9 +9,7 @@ let monthMenu = "01";
 let yearMenu = "2022";
 let revenueList = [];
 let expenseList = [];
-
 let list = expenseList;
-
 /*start analyze vars*/
 let dataA = [];
 let dataATotal = 0;
@@ -24,128 +18,17 @@ let dataBTotal = 0;
 let initialAmount = 0;
 let aTotal = 0;
 let bTotal = 0;
-
 let amounts = [Number(dataATotal), Number(dataBTotal)];
 let labels = [title + " List A", title + " List B"];
-
-/*var options = {
-    chart: {
-        type: 'bar'
-    },
-
-    series: [{
-        name: 'sales',
-        data: [30, 40, 45, 50, 49, 60, 70, 91, 125]
-    }],
-
-    xaxis: {
-        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
-    }
-};*/
-
 let findHeight = 100;
-
 const width = window.innerWidth;
 let legendWidth = 500;
-
 if (width < 768) {
     findHeight = 250;
     legendWidth = 435;
 } else {
     findHeight = 100;
-
 }
-
-/*let thisState = {
-    series: [],
-    total: 0, 
-    dataLabels: {
-        enabled: false,
-    },
-    options: {
-
-        chart: {
-            type: 'donut',
-            width: '100%',
-        },
-        legend: {
-            show: true,
-            showForSingleSeries: false,
-            showForNullSeries: true,
-            showForZeroSeries: true,
-            position: 'bottom',
-            horizontalAlign: 'left',
-            floating: false,
-            formatter: undefined,
-            inverseOrder: false,
-            width: legendWidth,
-            height: findHeight,
-            tooltipHoverFormatter: undefined,
-            customLegendItems: [],
-            offsetX: 15,
-            offsetY: 0,
-            labels: {
-                colors: undefined,
-                useSeriesColors: false
-            },
-            markers: {
-                width: 12,
-                height: 12,
-                strokeWidth: 0,
-                strokeColor: '#fff',
-                fillColors: undefined,
-                radius: 12,
-                customHTML: undefined,
-                onClick: undefined,
-                offsetX: 0,
-                offsetY: 0
-            },
-            itemMargin: {
-                horizontal: 2,
-                vertical: 0
-            },
-            onItemClick: {
-                toggleDataSeries: true
-            },
-            onItemHover: {
-                highlightDataSeries: true
-            },
-        },
-        labels: [],
-        plotOptions: {
-            bar: {
-                dataLabels: {
-                    position: 'bottom'
-                }
-            }
-        },
-        responsive: [{
-            breakpoint: 480,
-            options: {
-                chart: {
-                    width: 300,
-                    horizontalAlign: 'left',
-                    offsetX: 0,
-                    offsetY: 0,
-
-                },
-                legend: {
-                    width: 300,
-                    position: 'bottom',
-                    horizontalAlign: 'left',
-                    offsetX: 0,
-                    offsetY: 0,
-                }
-            }
-        }],
-        plotOptions: {
-            pie: {
-                customScale: 1,
-                labels: false
-            }
-        }
-    },
-};*/
 
 var options = {
     series: [],
@@ -166,12 +49,7 @@ var options = {
     }]
 };
 
-
-
 /*START FUNCTIONALITY*/
-
-
-
 const clearData = () => {
     document.getElementById("dataLocation").innerHTML = "No data";
     document.getElementById("functionBts").classList.add("hide");
@@ -204,22 +82,16 @@ const applyValues = () => {
             }
             console.log("ready to apply values.");
         }
-
         return false;
     }, 2000);
     return false;
 }
 
 const getData = () => {
-
     const year = document.querySelector("select[name='menu-select-year']").value;
     const month = document.querySelector("select[name='menu-select-month']").value;
     revenueList = null;
     expenseList = null;
-
-
-
-
     const buildObj = (obj) => {
         revenueList = [...obj[0].income];
         expenseList = [...obj[0].expenses];
@@ -243,15 +115,12 @@ const getData = () => {
         sessionStorage.setItem("expenseAmounts", JSON.stringify(tempExpenseAmounts));
         return false;
     }
-
     if (localStorage.getItem("csvData")) {
         document.getElementById("dataLocation").innerHTML = "Data stored locally";
         document.getElementById("functionBts").classList.remove("hide");
         document.getElementById("viewFunction").innerHTML = "Expenses";
         document.getElementById("displayPanel").classList.remove("hide");
-
         let data = JSON.parse(localStorage.getItem("csvData"));
-
         for (let i = 0; i < data.length; i++) {
             if (year + "-" + month == data[i].id) {
                 buildObj(data[i].monthYear);
@@ -259,15 +128,11 @@ const getData = () => {
         }
         return false;
     }
-
-
     return false;
-
 }
 
 
 const buildObjects = (temp) => {
-    //console.log("FROM buildObjects: JSON.stringify(temp): " + JSON.stringify(temp));
     let tempObj = [];
     let tempIncome = [];
     let tempExpenses = [];
@@ -276,7 +141,6 @@ const buildObjects = (temp) => {
     temp = temp.split("\n");
     let dateList = [];
     for (let i = 0; i < temp.length; i++) {
-        //"01/02/2022","-6.49","*","","GOOGLE GSUITE_web-presen650-2530000 CA"
         let prepLine = temp[i].split(",");
         let originalDate = prepLine[0];
         originalDate = originalDate.substring(1, originalDate.length - 1);
@@ -319,10 +183,8 @@ const buildObjects = (temp) => {
     }
 
     for (let i = 0; i < tempObj.length; i++) {
-
         for (let j = 0; j < tempIncome.length; j++) {
             if (tempObj[i].id === tempIncome[j].id) {
-
                 tempObj[i].monthYear[0].income.push({ itemName: tempIncome[j].itemName, amount: tempIncome[j].amount });
             }
         }
@@ -330,13 +192,8 @@ const buildObjects = (temp) => {
             if (tempObj[i].id === tempExpenses[j].id) {
                 tempObj[i].monthYear[0].expenses.push({ itemName: tempExpenses[j].itemName, amount: tempExpenses[j].amount });
             }
-
         }
     }
-
-
-
-
 
     localStorage.setItem("csvData", JSON.stringify(tempObj));
     setTimeout(() => {
@@ -352,30 +209,20 @@ const buildObjects = (temp) => {
             document.getElementById("viewFunction").innerHTML = "";
         }
     }, 500);
-
     getData();
     return false;
 }
 
 //START FILE READER
-//const fileReader = new FileReader();
 const handleOnChange = () => {
-
     file = document.getElementById("csvFileInput").files[0];
-
-    console.log("handleOnChange file: " + file);
     if (file) {
-
-        console.log("file: " + file);
         importDisable = false;
     } else {
         console.log("file FAIL: " + file);
     }
 };
 const handleOnSubmit = (type) => {
-
-
-    console.log("HANDLE ON SUBMIT file: " + file);
     if (file) {
         var reader = new FileReader();
         reader.readAsText(file, "UTF-8");
@@ -389,8 +236,6 @@ const handleOnSubmit = (type) => {
                 localStorage.setItem("csvData", tempObj);
                 getData();
             }
-
-
         }
         reader.onerror = function (evt) {
             console.log("error csvOutput: " + csvOutput)
@@ -401,70 +246,42 @@ const handleOnSubmit = (type) => {
     importDisable = true;
 };
 
-
-
 const buildListAmounts = (list) => {
-
     if (list.length > 0) {
-
-        console.log("JSON.stringify(list): " + JSON.stringify(list));
-
-
-
         let theList = list;
         let tempList = [];
         let tempLabels = [];
         let tempAmounts = [];
-
         for (let i = 0; i < theList.length; i++) {
             tempLabels.push(theList[i].itemName);
             tempAmounts.push(theList[i].amount);
         }
-
-
-
-
         for (let i = 0; i < tempLabels.length; i++) {
             tempList.push({ itemName: tempLabels[i], amount: tempAmounts[i] });
         }
         dataA = theList;
-
         let dataA_HTML = "";
         for (let i = 0; i < dataA.length; i++) {
             let funcA = ` onClick="javascript:seperateData('${dataA[i].itemName}',${dataA[i].amount},'A')" `;
             dataA_HTML = dataA_HTML + "<button type='button' " + funcA + "  class='list-group-item list-group-item-action'>" + dataA[i].itemName + " : $" + dataA[i].amount + "</button>";
         }
-
         document.getElementById("dataA").innerHTML = dataA_HTML
-
-
-
         let tempInitialAmount = 0;
         for (let i = 0; i < theList.length; i++) {
             tempInitialAmount = tempInitialAmount + Number(theList[i].amount);
         }
-
         initialAmount = tempInitialAmount;
         document.getElementById("initialAmount").innerHTML = initialAmount;
-
     }
     document.getElementById("displayPanel").classList.remove("hide");
 }
 
-
-
-
-
 const viewData = (viewFunc) => {
-    /*start analyze vars*/
-    // dataA = [], dataATotal = 0, dataB = [], dataBTotal = 0, initialAmount = 0, aTotal = 0, bTotal = 0;
     document.getElementById("dataB").innerHTML = "";
     document.getElementById("dataA").innerHTML = "";
     document.getElementById("initialAmount").innerHTML = "";
     document.getElementById("aTotal").innerHTML = "";
     document.getElementById("bTotal").innerHTML = "";
-
-
     if (viewFunc === "expenses") {
         list = expenseList;
         title = "expense";
@@ -477,20 +294,8 @@ const viewData = (viewFunc) => {
         e.classList.remove("active");
     })
     document.querySelector("button.btn[data-view='" + viewFunc + "']").classList.add("active");
-
-    console.log("list: " + JSON.stringify(list));
     buildListAmounts(list);
-
 }
-
-
-
-
-
-
-
-//DATA
-
 
 updatePie = () => {
     let tempTotal = 0;
@@ -500,14 +305,9 @@ updatePie = () => {
     }
     options.total = tempTotal;
     options.series = amounts;
-
-    console.log("JSON.stringify(options): " + JSON.stringify(options));
     var chart = new ApexCharts(document.querySelector("#chart"), options);
-
     chart.render();
 }
-
-
 
 const seperateData = (itemName, amount, initialList) => {
     let title = "income";
@@ -544,23 +344,18 @@ const seperateData = (itemName, amount, initialList) => {
         dataA = tempMerge;
         dataB = tempData;
     }
-
     let dataB_HTML = "";
     for (let i = 0; i < dataB.length; i++) {
         let funcB = ` onClick="javascript:seperateData('${dataB[i].itemName}',${dataB[i].amount},'B')" `;
         dataB_HTML = dataB_HTML + "<button type='button' " + funcB + "  class='list-group-item list-group-item-action'>" + dataB[i].itemName + " : $" + dataB[i].amount + "</button>";
     }
-
     document.getElementById("dataB").innerHTML = dataB_HTML;
-
     let dataA_HTML = "";
     for (let i = 0; i < dataA.length; i++) {
         let funcA = ` onClick="javascript:seperateData('${dataA[i].itemName}',${dataA[i].amount}, 'A')" `;
         dataA_HTML = dataA_HTML + "<button type='button' " + funcA + "  class='list-group-item list-group-item-action'>" + dataA[i].itemName + " : $" + dataA[i].amount + "</button>";
     }
-
     document.getElementById("dataA").innerHTML = dataA_HTML;
-
     //START A
     dataA = tempData;
     let tempDataATotal = 0;
@@ -583,12 +378,6 @@ const seperateData = (itemName, amount, initialList) => {
     labels = [title + " List A", title + " List B"];
     updatePie();
 }
-
-
-
-
-
-
 /*END FUNCTIONALITY*/
 
 
