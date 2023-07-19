@@ -12,7 +12,7 @@ let bTotal = 0;
 //DATA
 const seperateData = (itemName, amount, initialList) => {
     let title = "income";
-    if (props.title !== "Income") {
+    if (title !== "income") {
         title = "expense"
     }
     let tempB = dataB;
@@ -46,6 +46,26 @@ const seperateData = (itemName, amount, initialList) => {
         dataA = tempMerge;
         dataB = tempData;
     }
+
+
+
+
+    let dataB_HTML = "";
+    for (let i = 0; i < dataB.length; i++) {
+        let funcB = ` onClick="javascript:seperateData('${dataB[i].itemName}',${dataB[i].amount},'B')" `;
+        dataB_HTML = dataB_HTML + "<button type='button' " + funcB + "  class='list-group-item list-group-item-action'>" + dataB[i].itemName + " : $" + dataB[i].amount + "</button>";
+    }
+
+    document.getElementById("dataB").innerHTML = dataB_HTML;
+
+    let dataA_HTML = "";
+    for (let i = 0; i < dataA.length; i++) {
+        let funcA = ` onClick="javascript:seperateData('${dataA[i].itemName}',${dataA[i].amount}, 'A')" `;
+        dataA_HTML = dataA_HTML + "<button type='button' " + funcA + "  class='list-group-item list-group-item-action'>" + dataA[i].itemName + " : $" + dataA[i].amount + "</button>";
+    }
+
+    document.getElementById("dataA").innerHTML = dataA_HTML;
+
     //START A
     dataA = tempData;
     let tempDataATotal = 0;
@@ -53,6 +73,7 @@ const seperateData = (itemName, amount, initialList) => {
         tempDataATotal = tempDataATotal + Number(tempData[i].amount)
     }
     dataATotal = tempDataATotal;
+    document.getElementById("aTotal").innerHTML = dataATotal;
     sessionStorage.setItem(title + "A", tempDataATotal);
     ///START B
     dataB = tempMerge;
@@ -61,5 +82,6 @@ const seperateData = (itemName, amount, initialList) => {
         tempDataBTotal = tempDataBTotal + Number(tempMerge[i].amount);
     }
     dataBTotal = tempDataBTotal;
-    sessionStorage.setItem(title + "B", tempDataBTotal);
+    document.getElementById("bTotal").innerHTML = dataBTotal;
+    sessionStorage.setItem(title + "B", dataBTotal);
 }

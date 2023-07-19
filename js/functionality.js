@@ -20,7 +20,7 @@
 
 
 let file;
-
+let title;
 
 
 let importDisable = true;
@@ -292,7 +292,8 @@ const buildListAmounts = (list) => {
 
         let dataA_HTML = "";
         for (let i = 0; i < dataA.length; i++) {
-            dataA_HTML = dataA_HTML + "<button key={i} type='button' onClick='() => seperateData(item.itemName, item.amount, 'A')' class='list-group-item list-group-item-action'>" + dataA[i].itemName + " : $" + dataA[i].amount + "</button>";
+            let funcA = ` onClick="javascript:seperateData('${dataA[i].itemName}',${dataA[i].amount},'A')" `;
+            dataA_HTML = dataA_HTML + "<button type='button' " + funcA + "  class='list-group-item list-group-item-action'>" + dataA[i].itemName + " : $" + dataA[i].amount + "</button>";
         }
 
         document.getElementById("dataA").innerHTML = dataA_HTML
@@ -318,8 +319,10 @@ const buildListAmounts = (list) => {
 const viewData = (viewFunc) => {
     if (viewFunc === "expenses") {
         list = expenseList;
+        title = "expense";
     } else {
         list = revenueList;
+        title = "income";
     }
     document.getElementById("viewFunction").innerHTML = viewFunc;
     [].forEach.call(document.querySelectorAll("button.btn[data-view]"), (e) => {
