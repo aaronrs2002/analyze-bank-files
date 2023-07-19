@@ -1,13 +1,7 @@
 
 
 
-let dataA = [];
-let dataATotal = 0;
-let dataB = [];
-let dataBTotal = 0;
-let initialAmount = 0;
-let aTotal = 0;
-let bTotal = 0;
+
 
 //DATA
 const seperateData = (itemName, amount, initialList) => {

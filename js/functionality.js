@@ -35,6 +35,15 @@ let expenseList = [];
 
 let list = expenseList;
 
+/*start analyze vars*/
+let dataA = [];
+let dataATotal = 0;
+let dataB = [];
+let dataBTotal = 0;
+let initialAmount = 0;
+let aTotal = 0;
+let bTotal = 0;
+
 const clearData = () => {
     document.getElementById("dataLocation").innerHTML = "No data";
     document.getElementById("functionBts").classList.add("hide");
@@ -44,6 +53,8 @@ const clearData = () => {
     expenseList = null;
     localStorage.removeItem("csvData");
     sessionStorage.removeItem("expenseAmounts");
+    /*start analyze vars*/
+    dataA = [], dataATotal = 0, dataB = [], dataBTotal = 0, initialAmount = 0, aTotal = 0, bTotal = 0;
 }
 
 const applyValues = () => {
@@ -317,6 +328,15 @@ const buildListAmounts = (list) => {
 
 
 const viewData = (viewFunc) => {
+    /*start analyze vars*/
+    dataA = [], dataATotal = 0, dataB = [], dataBTotal = 0, initialAmount = 0, aTotal = 0, bTotal = 0;
+    document.getElementById("dataB").innerHTML = "";
+    document.getElementById("dataA").innerHTML = "";
+    document.getElementById("initialAmount").innerHTML = "";
+    document.getElementById("aTotal").innerHTML = "";
+    document.getElementById("bTotal").innerHTML = "";
+
+
     if (viewFunc === "expenses") {
         list = expenseList;
         title = "expense";
