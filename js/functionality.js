@@ -1,3 +1,4 @@
+let activeChart = false;
 let file;
 let title;
 let importDisable = true;
@@ -49,6 +50,9 @@ var options = {
         }
     }]
 };
+// Create chart with init options
+// Note that the link to the chart object is in the GLOBAL scope
+var chart = new ApexCharts(document.getElementById('chart'), options);
 
 /*START FUNCTIONALITY*/
 const clearData = () => {
@@ -92,7 +96,6 @@ const applyValues = () => {
                 }
                 ready = true;
             }
-            console.log("ready to apply values.");
         }
         return false;
     }, 2000);
@@ -298,7 +301,6 @@ const viewData = (viewFunc) => {
         list = revenueList;
         title = "income";
     }
-
     options.labels = [title + " List A", title + " List B"];
     document.getElementById("viewFunction").innerHTML = viewFunc;
     [].forEach.call(document.querySelectorAll("button.btn[data-view]"), (e) => {
@@ -307,18 +309,6 @@ const viewData = (viewFunc) => {
     document.querySelector("button.btn[data-view='" + viewFunc + "']").classList.add("active");
     buildListAmounts(list);
 }
-
-/*  updatePie = () => {
-    let tempTotal = 0;
-    console.log("amounts: " + amounts);
-    for (let i = 0; i < amounts.length; i++) {
-        tempTotal = tempTotal + amounts[i];
-    }
-    options.total = tempTotal;
-    options.series = amounts;
-    var chart = new ApexCharts(document.querySelector("#chart"), options);
-    chart.render();
-}*/
 
 const seperateData = (itemName, amount, initialList) => {
     let tempB = dataB;
@@ -383,13 +373,29 @@ const seperateData = (itemName, amount, initialList) => {
     sessionStorage.setItem(title + "B", dataBTotal);
     amounts = [Number(dataATotal), Number(dataBTotal)];
     document.getElementById("chart").innerHTML = "";
-
-    // updatePie();
-
     options.total = parseInt(dataATotal) + parseInt(dataBTotal);
     options.series = amounts;
-    var chart = new ApexCharts(document.querySelector("#chart"), options);
-    chart.render();
+    chart.render();  // Firstly, prepare the ground
+    chart.updateOptions({
+        series: options.series,
+        total: 0,
+        chart: {
+            type: 'donut',
+        },
+        labels,
+        responsive: [{
+            breakpoint: 480,
+            options: {
+                chart: {
+                    width: "auto"
+                },
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }]
+    }); // Secondly, draw we want
+    // chart.updateOptions(newOptions); Redraw we want
 }
 /*END FUNCTIONALITY*/
 
