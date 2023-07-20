@@ -18,6 +18,25 @@ body:after {
 
 }
 
+[data-chart] {
+    background-color: #f8f8f8;
+    border-radius: 5px;
+}
+
+nav img {
+    width: 120px;
+    height: auto;
+    cursor: pointer;
+    margin-left: -18px;
+    margin-top: -25px;
+    position: absolute;
+    z-index: 9;
+}
+
+nav {
+    box-shadow: -4px 3px 0 rgb(0 0 0 / 8%);
+}
+
 .container,
 .container-fluid {
     padding-top: 30px;

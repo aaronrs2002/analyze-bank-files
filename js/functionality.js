@@ -1,4 +1,3 @@
-let activeChart = false;
 let file;
 let title;
 let importDisable = true;
@@ -382,7 +381,7 @@ const seperateData = (itemName, amount, initialList) => {
         chart: {
             type: 'donut',
         },
-        labels,
+        labels: [title + " List A", title + " List B"],
         responsive: [{
             breakpoint: 480,
             options: {
@@ -398,6 +397,19 @@ const seperateData = (itemName, amount, initialList) => {
     // chart.updateOptions(newOptions); Redraw we want
 }
 /*END FUNCTIONALITY*/
+
+function tadaRollover(element) {
+    document.querySelector("[data-tada='" + element + "']").classList.add("tada");
+    if (document.querySelector("#footerIcons a i[data-tada='" + element + "']")) {
+        document.querySelector("#footerIcons a i[data-tada='" + element + "']").classList.add("tada");
+    }
+}
+function tadaRollout(element) {
+    document.querySelector("[data-tada='" + element + "']").classList.remove("tada");
+    if (document.querySelector("#footerIcons a i[data-tada='" + element + "']")) {
+        document.querySelector("#footerIcons a i[data-tada='" + element + "']").classList.remove("tada");
+    }
+}
 
 
 
