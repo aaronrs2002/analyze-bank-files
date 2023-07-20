@@ -66,6 +66,10 @@ const clearData = () => {
     expenseList = null;
     localStorage.removeItem("csvData");
     sessionStorage.removeItem("expenseAmounts");
+    sessionStorage.removeItem("incomeA");
+    sessionStorage.removeItem("incomeB");
+    sessionStorage.removeItem("expenseA");
+    sessionStorage.removeItem("expenseB");
     /*start analyze vars*/
     dataA = [], dataATotal = 0, dataB = [], dataBTotal = 0, initialAmount = 0, aTotal = 0, bTotal = 0;
 }
