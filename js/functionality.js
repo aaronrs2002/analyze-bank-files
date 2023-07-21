@@ -40,38 +40,19 @@ var options = {
     }]*/
     responsive: [
         {
-
+            breakpoint: 300,
             options: {
-                chart: {
-                    width: "100%",
-                    height: "100%",
-                    position: 'center',
-                    horizontalAlign: 'center',
-                    offsetX: 0,
-                    offsetY: 0,
-
+                plotOptions: {
+                    bar: {
+                        horizontal: false
+                    }
                 },
-
                 legend: {
-
-                    width: 150,
-                    height: "auto",
-                    position: 'right',
-                    horizontalAlign: 'right',
-                    offsetX: 75,
-                    offsetY: 0,
+                    position: "bottom"
                 }
             }
         }
     ]
-    ,
-    plotOptions: {
-        pie: {
-            customScale: 1,
-            labels: false,
-
-        }
-    }
 };
 // Create chart with init options
 // Note that the link to the chart object is in the GLOBAL scope
