@@ -299,10 +299,10 @@ const viewData = (viewFunc) => {
     prepForNewData();
     if (viewFunc === "expenses") {
         list = expenseList;
-        title = "expense";
+        title = "Expense";
     } else {
         list = revenueList;
-        title = "income";
+        title = "Income";
     }
     options.labels = [title + " List A", title + " List B"];
     document.getElementById("viewFunction").innerHTML = viewFunc;
@@ -364,7 +364,7 @@ const seperateData = (itemName, amount, initialList) => {
     }
     dataATotal = tempDataATotal;
     document.getElementById("aTotal").innerHTML = dataATotal;
-    sessionStorage.setItem(title + "A", tempDataATotal);
+    sessionStorage.setItem(title.toLowerCase() + "A", tempDataATotal);
     ///START B
     dataB = tempMerge;
     let tempDataBTotal = 0;
@@ -373,7 +373,7 @@ const seperateData = (itemName, amount, initialList) => {
     }
     dataBTotal = tempDataBTotal;
     document.getElementById("bTotal").innerHTML = dataBTotal;
-    sessionStorage.setItem(title + "B", dataBTotal);
+    sessionStorage.setItem(title.toLowerCase() + "B", dataBTotal);
     amounts = [Number(dataATotal), Number(dataBTotal)];
     document.getElementById("chart").innerHTML = "";
     options.total = parseInt(dataATotal) + parseInt(dataBTotal);
