@@ -280,32 +280,48 @@ const handleOnSubmit = (type) => {
 };
 
 const buildListAmounts = (list) => {
-    if (list.length > 0) {
-        let theList = list;
-        let tempList = [];
-        let tempLabels = [];
-        let tempAmounts = [];
-        for (let i = 0; i < theList.length; i++) {
-            tempLabels.push(theList[i].itemName);
-            tempAmounts.push(theList[i].amount);
+
+    try {
+        if (list.length > 0) {
+            let theList = list;
+            let tempList = [];
+            let tempLabels = [];
+            let tempAmounts = [];
+            for (let i = 0; i < theList.length; i++) {
+                tempLabels.push(theList[i].itemName);
+                tempAmounts.push(theList[i].amount);
+            }
+            for (let i = 0; i < tempLabels.length; i++) {
+                tempList.push({ itemName: tempLabels[i], amount: tempAmounts[i] });
+            }
+            dataA = theList;
+            let dataA_HTML = "";
+            for (let i = 0; i < dataA.length; i++) {
+                let funcA = ` onClick="javascript:seperateData('${dataA[i].itemName}',${dataA[i].amount},'A')" `;
+                dataA_HTML = dataA_HTML + "<button type='button' " + funcA + "  class='list-group-item list-group-item-action'>" + dataA[i].itemName + " : $" + dataA[i].amount + "</button>";
+            }
+            document.getElementById("dataA").innerHTML = dataA_HTML
+            let tempInitialAmount = 0;
+            for (let i = 0; i < theList.length; i++) {
+                tempInitialAmount = tempInitialAmount + Number(theList[i].amount);
+            }
+            initialAmount = tempInitialAmount;
+            document.getElementById("initialAmount").innerHTML = initialAmount;
+            globalAlert("alert-success", "That worked.");
         }
-        for (let i = 0; i < tempLabels.length; i++) {
-            tempList.push({ itemName: tempLabels[i], amount: tempAmounts[i] });
-        }
-        dataA = theList;
-        let dataA_HTML = "";
-        for (let i = 0; i < dataA.length; i++) {
-            let funcA = ` onClick="javascript:seperateData('${dataA[i].itemName}',${dataA[i].amount},'A')" `;
-            dataA_HTML = dataA_HTML + "<button type='button' " + funcA + "  class='list-group-item list-group-item-action'>" + dataA[i].itemName + " : $" + dataA[i].amount + "</button>";
-        }
-        document.getElementById("dataA").innerHTML = dataA_HTML
-        let tempInitialAmount = 0;
-        for (let i = 0; i < theList.length; i++) {
-            tempInitialAmount = tempInitialAmount + Number(theList[i].amount);
-        }
-        initialAmount = tempInitialAmount;
-        document.getElementById("initialAmount").innerHTML = initialAmount;
+
+    } catch (error) {
+
+        globalAlert("alert-danger", "Shomething doesn't look correct with your data. : " + error);
+        return false;
+
     }
+
+
+
+
+    return false;
+
     document.getElementById("displayPanel").classList.remove("hide");
 }
 
