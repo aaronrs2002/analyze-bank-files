@@ -58,6 +58,10 @@ nav h3 {
     text-transform: capitalize;
 }
 
+ul.numberedLi li {
+    list-style-type: decimal;
+}
+
 [data-chart] {
     background-color: #f8f8f8;
     border-radius: 5px;
