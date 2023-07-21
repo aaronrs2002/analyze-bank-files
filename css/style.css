@@ -35,6 +35,11 @@ nav img {
 
 nav {
     box-shadow: -4px 3px 0 rgb(0 0 0 / 8%);
+
+}
+
+nav h3 {
+    color: #fff;
 }
 
 .container,
