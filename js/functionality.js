@@ -256,26 +256,32 @@ const handleOnChange = () => {
     }
 };
 const handleOnSubmit = (type) => {
-    if (file) {
-        var reader = new FileReader();
-        reader.readAsText(file, "UTF-8");
-        reader.onload = function (evt) {
-            let csvOutput = evt.target.result;
 
-            if (type === "csv") {
-                buildObjects(csvOutput);
-            } else {
-                let tempObj = JSON.stringify(JSON.parse(csvOutput));
-                localStorage.setItem("csvData", tempObj);
-                getData();
+    try {
+        if (file) {
+            var reader = new FileReader();
+            reader.readAsText(file, "UTF-8");
+            reader.onload = function (evt) {
+                let csvOutput = evt.target.result;
+
+                if (type === "csv") {
+                    buildObjects(csvOutput);
+                } else {
+                    let tempObj = JSON.stringify(JSON.parse(csvOutput));
+                    localStorage.setItem("csvData", tempObj);
+                    getData();
+                }
+
+            }
+            reader.onerror = function (evt) {
+                console.log("error csvOutput: " + csvOutput)
             }
         }
-        reader.onerror = function (evt) {
-            console.log("error csvOutput: " + csvOutput)
-        }
-    } else {
-        console.log("error file: " + file);
+    } catch (error) {
+        globalAlert("alert-danger", "This data gave me an error: " + error);
+        return false;
     }
+
 
 };
 
@@ -307,12 +313,12 @@ const buildListAmounts = (list) => {
             }
             initialAmount = tempInitialAmount;
             document.getElementById("initialAmount").innerHTML = initialAmount;
-            globalAlert("alert-success", "That worked.");
+
         }
 
     } catch (error) {
 
-        globalAlert("alert-danger", "Shomething doesn't look correct with your data. : " + error);
+        globalAlert("alert-danger", "Shomething doesn't look correct. Check things like your month and year above or the file format: " + error);
         return false;
 
     }
