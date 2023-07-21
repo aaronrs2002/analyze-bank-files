@@ -231,6 +231,7 @@ const buildObjects = (temp) => {
     localStorage.setItem("csvData", JSON.stringify(tempObj));
     setTimeout(() => {
         if (localStorage.getItem("csvData")) {
+            globalAlert("alert-success", "Data uploaded. Select \"Expense\" or \"Income\".");
             document.getElementById("dataLocation").innerHTML = "data stored locally";
             document.getElementById("functionBts").classList.remove("hide");
             document.getElementById("viewFunction").innerHTML = "Select Expenses or Income";
@@ -274,7 +275,10 @@ const handleOnSubmit = (type) => {
 
             }
             reader.onerror = function (evt) {
-                console.log("error csvOutput: " + csvOutput)
+
+                console.log("error csvOutput: " + csvOutput);
+                globalAlert("alert-danger", "Your file gave me an error");
+                return false;
             }
         }
     } catch (error) {
