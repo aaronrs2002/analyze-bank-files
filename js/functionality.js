@@ -27,17 +27,40 @@ var options = {
         type: 'donut',
     },
     labels: [],
-    responsive: [{
-        breakpoint: 480,
-        options: {
-            chart: {
-                width: "auto"
-            },
-            legend: {
-                position: 'bottom'
+    responsive: [
+        {
+            breakpoint: undefined,
+            options: {
+                chart: {
+                    width: "100%",
+                    height: "100%",
+                    position: 'center',
+                    horizontalAlign: 'center',
+                    offsetX: 0,
+                    offsetY: 0,
+
+                },
+
+                legend: {
+
+                    width: 150,
+                    height: "auto",
+                    position: 'right',
+                    horizontalAlign: 'right',
+                    offsetX: 75,
+                    offsetY: 0,
+                }
             }
         }
-    }]
+    ]
+    ,
+    plotOptions: {
+        pie: {
+            customScale: 1,
+            labels: false,
+
+        }
+    }
 
 };
 // Create chart with init options
@@ -378,7 +401,7 @@ const seperateData = (itemName, amount, initialList) => {
         },
         labels: [title + " List A", title + " List B"],
         responsive: [{
-            breakpoint: 480,
+            breakpoint: undefined,
             options: {
                 chart: {
                     width: "auto"
