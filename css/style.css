@@ -23,6 +23,12 @@ body:after {
     border-radius: 5px;
 }
 
+#csvFileInput,
+#importBt {
+    height: 44px;
+    width: 100%;
+}
+
 nav img {
     width: 100px;
     height: auto;
