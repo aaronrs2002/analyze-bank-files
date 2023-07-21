@@ -125,6 +125,15 @@ nav h3 {
     display: none;
 }
 
+@media (max-width: 1300px) {
+
+    #chart {
+        width: 100%;
+        display: block;
+    }
+
+}
+
 @media (max-width: 768px) {
 
     .mobileOnly {
