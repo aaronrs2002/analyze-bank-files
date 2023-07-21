@@ -231,7 +231,7 @@ const buildObjects = (temp) => {
     localStorage.setItem("csvData", JSON.stringify(tempObj));
     setTimeout(() => {
         if (localStorage.getItem("csvData")) {
-            globalAlert("alert-success", "Data uploaded. Select \"Expense\" or \"Income\".");
+            globalAlert("alert-success", "Data uploaded. Select \"Expenses\" or \"Income\".");
             document.getElementById("dataLocation").innerHTML = "data stored locally";
             document.getElementById("functionBts").classList.remove("hide");
             document.getElementById("viewFunction").innerHTML = "Select Expenses or Income";
