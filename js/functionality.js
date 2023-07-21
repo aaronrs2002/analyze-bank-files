@@ -1,6 +1,5 @@
 let file;
 let title;
-let importDisable = true;
 let incomeLabels = [];
 let expenseLabels = [];
 let expenseAmounts = [];
@@ -20,15 +19,6 @@ let aTotal = 0;
 let bTotal = 0;
 let amounts = [Number(dataATotal), Number(dataBTotal)];
 let labels = [title + " List A", title + " List B"];
-let findHeight = 100;
-const width = window.innerWidth;
-let legendWidth = 500;
-if (width < 768) {
-    findHeight = 250;
-    legendWidth = 435;
-} else {
-    findHeight = 100;
-}
 
 var options = {
     series: [],
@@ -236,7 +226,7 @@ const buildObjects = (temp) => {
 const handleOnChange = () => {
     file = document.getElementById("csvFileInput").files[0];
     if (file) {
-        importDisable = false;
+        document.getElementById("importBt").disabled = false;
     } else {
         console.log("file FAIL: " + file);
     }
@@ -262,7 +252,7 @@ const handleOnSubmit = (type) => {
     } else {
         console.log("error file: " + file);
     }
-    importDisable = true;
+
 };
 
 const buildListAmounts = (list) => {
