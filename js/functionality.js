@@ -27,7 +27,7 @@ var options = {
         type: 'donut',
     },
     labels: [],
-    /*responsive: [{
+    responsive: [{
         breakpoint: 480,
         options: {
             chart: {
@@ -37,22 +37,8 @@ var options = {
                 position: 'bottom'
             }
         }
-    }]*/
-    responsive: [
-        {
-            breakpoint: 300,
-            options: {
-                plotOptions: {
-                    bar: {
-                        horizontal: false
-                    }
-                },
-                legend: {
-                    position: "bottom"
-                }
-            }
-        }
-    ]
+    }]
+
 };
 // Create chart with init options
 // Note that the link to the chart object is in the GLOBAL scope
