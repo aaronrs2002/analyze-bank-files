@@ -24,7 +24,8 @@ body:after {
 }
 
 #csvFileInput,
-#importBt {
+#importBt,
+button[alt="clearData"] {
     height: 44px;
     width: 100%;
 }
