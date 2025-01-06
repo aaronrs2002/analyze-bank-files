@@ -4,19 +4,6 @@ body {
     font-family: Roboto, sans-serif;
 }
 
-body:after {
-    content: "";
-    background: linear-gradient(to top, rgb(47, 61, 47), #f8f8f8);
-
-    opacity: .3;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    position: fixed;
-    z-index: -1;
-
-}
 
 [data-chart] {
     background-color: #f8f8f8;
@@ -30,7 +17,7 @@ button[alt="clearData"] {
     width: 100%;
 }
 
-nav img {
+/*nav img {
     width: 100px;
     height: auto;
     cursor: pointer;
@@ -47,10 +34,9 @@ nav {
 
 nav h3 {
     color: #fff;
-}
+}*/
 
-.container,
-.container-fluid {
+.container {
     padding-top: 30px;
 }
 
