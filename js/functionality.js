@@ -179,11 +179,11 @@ const buildObjects = (temp) => {
         originalDate = originalDate.substring(1, originalDate.length - 1);
         originalDate = originalDate.substring(6, originalDate.length) + "-" + originalDate.substring(0, 2);
         let id = originalDate;
-        let originalPrice = prepLine[1];
+        let originalPrice = prepLine[2];
         if (originalPrice) {
             let amount = originalPrice.substring(1, (originalPrice.length - 1));
             amount = Number(amount)
-            let originalName = prepLine[4].replace(/[&\/\\'"“]/g, '');
+            let originalName = prepLine[1].replace(/[&\/\\'"“]/g, '');
             originalName = originalName.substring(0, originalName.length);
 
             if ((typeof Number(originalPrice)) === "number") {
