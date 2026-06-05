@@ -59,162 +59,167 @@
 
 
   <div class="container">
+    <div class="card">
+      <div class="card-body">
 
-    <div class="row">
-      <div class="col-md-6">
-        <h1 class="capitalize" id="dataLocation">Read CSV/ASCII bank files</h1>
-      </div>
-
-
-      <div class="col-md-6">
-
-        <h1 class="capitalize" id="viewFunction">No Data currently</h1>
-
-      </div>
-
-      <div class="col-md-6">
-        <select name="menu-select-year" class="form-control" onChange="getData()">
-
-        </select>
-
-      </div>
-
-      <div class="col-md-6">
-        <select name="menu-select-month" class="form-control" onChange="getData()">
-
-        </select>
-
-      </div>
+        <div class="row">
+          <div class="col-md-6">
+            <h1 class="capitalize" id="dataLocation">Read CSV/ASCII bank files</h1>
+          </div>
 
 
+          <div class="col-md-6">
 
-      <div class="col-md-3">
+            <h1 class="capitalize" id="viewFunction">No Data currently</h1>
 
+          </div>
 
+          <div class="col-md-6">
+            <select name="menu-select-year" class="form-control" onChange="getData()">
 
-        <input type="file" id="csvFileInput" accept=".csv" class="btn btn-secondary" onChange="handleOnChange()" />
-      </div>
-      <div class="col-md-3">
-        <button type="button" class="btn btn-success w-100" id="importBt" disabled="disabled"
-          onClick="javascript:handleOnSubmit('csv')">
-          IMPORT CSV
-        </button>
+            </select>
 
-      </div>
-      <div class="col-md-6">
-        <button class="btn btn-danger w-100" onClick="clearData()" alt="clearData">Clear Data</button>
-      </div>
+          </div>
 
-      <div class="col-md-12 hide" id="functionBts">
-        <div class="btn-group block">
-          <button class="btn btn-primary" data-view="expenses" onClick="viewData('expenses')">Expenses</button>
-          <button class="btn btn-primary" data-view="income" onClick="viewData('income')">Income</button>
+          <div class="col-md-6">
+            <select name="menu-select-month" class="form-control" onChange="getData()">
 
-        </div>
-      </div>
-
-
-
-
-      <div class="row mb-5 hide" id="displayPanel">
-        <div class="col-md-4">
-          <h3>List A</h3>
-
-          <ul class="list-group" id="dataA">
-            <!-- {dataA !== [] ? dataA.map((item, i) => {
-                    return (<button key={i} type="button" onClick={() => seperateData(item.itemName, item.amount, "A")} class="list-group-item list-group-item-action">{item.itemName + " : $" + item.amount}</button>)
-                }) : null}-->
-          </ul>
-          <ul class="list-unstyled">
-            <!--{dataBTotal !== 0 ? <li>Total: ${aTotal}</li> : null}
-                {initialAmount ? <li>Initial Amount: ${initialAmount} </li> : null}-->
-            <li>Total: <span id="aTotal"></span></li>
-            <li>Initial Amount: $<span id="initialAmount"></span></li>
-          </ul>
-
-        </div>
-        <div class="col-md-4">
-          <h3>List B</h3>
-          <ul class="list-group" id="dataB">
-
-            <!-- {dataB.length > 0 ? dataB.map((item, i) => {
-                    return (<button key={i} type="button" onClick={() => seperateData(item.itemName, item.amount, "B")} class="list-group-item list-group-item-action">{item.itemName + " : $" + item.amount}</button>)
-                }) : null}-->
-
-          </ul>
-          <ul class="list-unstyled">
-            <li>Total: $<span id="bTotal"></span></li>
-
-          </ul>
-
-        </div>
-        <div class="col-md-4">
-          <div id="chart" data-chart="donut"></div>
-        </div>
-      </div>
-
-
-
-
-
-
-
-
-      <div class="col-md-12 py-2">
-
-        <div class="d-grid gap-2">
-          <button class="btn btn-info" onClick="javascript:toggle('rules')" type="button" data-toggle="default">View
-            Instructions</button>
-          <button class="btn btn-info hide" onClick="javascript:toggle('default')" type="button"
-            data-toggle="rules">Hide
-            Instructions</button>
-        </div>
-
-        <div class="card hide" data-toggle="rules">
-          <div class="card-body">
-            <div class="row">
-
-              <div class="col-md-6">
-                <h5 class="card-title">Read CSV/ASCII bank files with this free JavaScript web application</h5>
-                <p>Upload files to your browser's local storage for you to analyze. No APIs just a static JavaScript
-                  banking
-                  tool.</p>
-                <label>Steps:</label>
-                <ol class="list-numbered">
-                  <li>Click the "Choose File" button to browse your files</li>
-                  <li>Select your .csv file</li>
-                  <li>Click "IMPORT CSV"</li>
-                  <li>Ensure the year and month selection, at the top, are correct</li>
-                  <li>Select "Expenses" or "Income" to see your data</li>
-                </ol>
-                <p>Open source code:<br><a href="https://github.com/aaronrs2002/analyze-bank-files"
-                    target="_blank">https://github.com/aaronrs2002/analyze-bank-files</a></p>
-                <p>ASCII delimited (a.k.a. comma delimited) is a much used exchange file format that is used and
-                  recognized
-                  by
-                  many database programs. An ASCII delimited file is a text file with the extension . csv. All fields of
-                  a
-                  record are on one line, separated typically by commas*.</p>
-                <p>This is an open source free calculator</p>
-              </div>
-
-              <div class="col-md-6">
-
-
-                <p>Instructions and code walk through:</p>
-                <iframe width="90%" height="315" src="https://www.youtube.com/embed/lNk7VpwEJOY?si=9bQ9JxkPhT4McSa0"
-                  title="YouTube video player" frameborder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-              </div>
-            </div>
+            </select>
 
           </div>
 
 
+
+          <div class="col-md-3">
+
+
+
+            <input type="file" id="csvFileInput" accept=".csv" class="btn btn-secondary" onChange="handleOnChange()" />
+          </div>
+          <div class="col-md-3">
+            <button type="button" class="btn btn-success w-100" id="importBt" disabled="disabled"
+              onClick="javascript:handleOnSubmit('csv')">
+              IMPORT CSV
+            </button>
+
+          </div>
+          <div class="col-md-6">
+            <button class="btn btn-danger w-100" onClick="clearData()" alt="clearData">Clear Data</button>
+          </div>
+
+          <div class="col-md-12 hide" id="functionBts">
+            <div class="btn-group block">
+              <button class="btn btn-primary" data-view="expenses" onClick="viewData('expenses')">Expenses</button>
+              <button class="btn btn-primary" data-view="income" onClick="viewData('income')">Income</button>
+
+            </div>
+          </div>
+
+
+
+
+          <div class="row mb-5 hide" id="displayPanel">
+            <div class="col-md-4">
+              <h3>List A</h3>
+
+              <ul class="list-group" id="dataA">
+                <!-- {dataA !== [] ? dataA.map((item, i) => {
+                    return (<button key={i} type="button" onClick={() => seperateData(item.itemName, item.amount, "A")} class="list-group-item list-group-item-action">{item.itemName + " : $" + item.amount}</button>)
+                }) : null}-->
+              </ul>
+              <ul class="list-unstyled">
+                <!--{dataBTotal !== 0 ? <li>Total: ${aTotal}</li> : null}
+                {initialAmount ? <li>Initial Amount: ${initialAmount} </li> : null}-->
+                <li>Total: <span id="aTotal"></span></li>
+                <li>Initial Amount: $<span id="initialAmount"></span></li>
+              </ul>
+
+            </div>
+            <div class="col-md-4">
+              <h3>List B</h3>
+              <ul class="list-group" id="dataB">
+
+                <!-- {dataB.length > 0 ? dataB.map((item, i) => {
+                    return (<button key={i} type="button" onClick={() => seperateData(item.itemName, item.amount, "B")} class="list-group-item list-group-item-action">{item.itemName + " : $" + item.amount}</button>)
+                }) : null}-->
+
+              </ul>
+              <ul class="list-unstyled">
+                <li>Total: $<span id="bTotal"></span></li>
+
+              </ul>
+
+            </div>
+            <div class="col-md-4">
+              <div id="chart" data-chart="donut"></div>
+            </div>
+          </div>
+
+
+
+
+
+
+
+
+          <div class="col-md-12 py-2">
+
+            <div class="d-grid gap-2">
+              <button class="btn btn-info" onClick="javascript:toggle('rules')" type="button" data-toggle="default">View
+                Instructions</button>
+              <button class="btn btn-info hide" onClick="javascript:toggle('default')" type="button"
+                data-toggle="rules">Hide
+                Instructions</button>
+            </div>
+
+            <div class="card hide" data-toggle="rules">
+              <div class="card-body">
+                <div class="row">
+
+                  <div class="col-md-6">
+                    <h5 class="card-title">Read CSV/ASCII bank files with this free JavaScript web application</h5>
+                    <p>Upload files to your browser's local storage for you to analyze. No APIs just a static JavaScript
+                      banking
+                      tool.</p>
+                    <label>Steps:</label>
+                    <ol class="list-numbered">
+                      <li>Click the "Choose File" button to browse your files</li>
+                      <li>Select your .csv file</li>
+                      <li>Click "IMPORT CSV"</li>
+                      <li>Ensure the year and month selection, at the top, are correct</li>
+                      <li>Select "Expenses" or "Income" to see your data</li>
+                    </ol>
+                    <p>Open source code:<br><a href="https://github.com/aaronrs2002/analyze-bank-files"
+                        target="_blank">https://github.com/aaronrs2002/analyze-bank-files</a></p>
+                    <p>ASCII delimited (a.k.a. comma delimited) is a much used exchange file format that is used and
+                      recognized
+                      by
+                      many database programs. An ASCII delimited file is a text file with the extension . csv. All
+                      fields of
+                      a
+                      record are on one line, separated typically by commas*.</p>
+                    <p>This is an open source free calculator</p>
+                  </div>
+
+                  <div class="col-md-6">
+
+
+                    <p>Instructions and code walk through:</p>
+                    <iframe width="90%" height="315" src="https://www.youtube.com/embed/lNk7VpwEJOY?si=9bQ9JxkPhT4McSa0"
+                      title="YouTube video player" frameborder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                  </div>
+                </div>
+
+              </div>
+
+
+            </div>
+
+
+          </div>
         </div>
-
-
       </div>
     </div>
   </div>
