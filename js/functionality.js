@@ -171,10 +171,16 @@ const buildObjects = (temp) => {
     let tempExpenses = [];
     const year = document.querySelector("select[name='menu-select-year']").value;
     const month = document.querySelector("select[name='menu-select-month']").value;
+
     temp = temp.split("\n");
+
+
+    console.log("JSON.stringify(temp): " + JSON.stringify(temp));
+
     let dateList = [];
     for (let i = 0; i < temp.length; i++) {
-        let prepLine = temp[i].split(",");
+        let prepLine = temp[i].split(`,`);
+
         let originalDate = prepLine[0];
         originalDate = originalDate.substring(1, originalDate.length - 1);
         originalDate = originalDate.substring(6, originalDate.length) + "-" + originalDate.substring(0, 2);
