@@ -121,14 +121,22 @@
           <div class="row mb-5 hide" id="displayPanel">
             <div class="col-md-12 hide">
               <ul class="list-unstyled">
+                <input type="text" name="chosenTransaction" placeholder="Transaction title" class="form-control"
+                  disabled />
                 <li>Add/Edit Category</li>
-                <li><select class="form-control">
+                <li><select class="form-control" name="categoryList" onChange="populateCategory()">
                     <option value="default">Assign category for selected item</option>
+                    <option value="streaming">Streaming Services</option>
+                    <option value="groceries">Groceries</option>
+                    <option value="home">Home</option>
+                    <option value="car">Car</option>
+                    <option value="fun">Fun Expenses</option>
+                    <option value="services">Services</option>
                   </select></li>
                 <li><input type="text" name="assignCategory" placeholder="Type the name of the new category."
                     class="form-control" /></li>
                 <li>
-                  <button class="btn w-100 btn-success">Add item to category</button>
+                  <button class="btn w-100 btn-success" onClick="updateCategory()">Add item to category</button>
                 </li>
               </ul>
             </div>

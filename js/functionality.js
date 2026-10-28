@@ -361,21 +361,88 @@ const viewData = (viewFunc) => {
     buildListAmounts(list);
 }
 
+
+const populateCategory = () => {
+    let selectedCategory = document.querySelector("select[name='categoryList']").value;
+    if (selectedCategory === "default") {
+        return false;
+    } else {
+        document.querySelector("input[name='assignCategory']").value = selectedCategory;
+    }
+    let selectedTransaction = document.querySelector("input[name='chosenTransaction']").value;
+    if (selectedTransaction.length === 0) {
+        return false;
+    }
+}
+
+const updateCategory = () => {
+
+    let selectedTransaction = document.querySelector("input[name='chosenTransaction']").value;
+    let selectedCategory = document.querySelector("select[name='categoryList']").value;
+
+    let csvData = JSON.parse(localStorage.getItem("csvData"));
+
+    for (let i = 0; i < csvData.length; i++) {
+
+        for (let j = 0; j < csvData[i].monthYear.length; j++) {
+
+            for (let s = 0; s < csvData[i].monthYear[j].income.length; s++) {
+
+                if (csvData[i].monthYear[j].income[s].itemName === selectedTransaction) {
+                    csvData[i].monthYear[j].income[s].category = selectedCategory;
+                }
+            }
+
+            for (let s = 0; s < csvData[i].monthYear[j].expenses.length; s++) {
+
+                if (csvData[i].monthYear[j].expenses[s].itemName === selectedTransaction) {
+                    csvData[i].monthYear[j].expenses[s].category = selectedCategory;
+                }
+            }
+
+
+        }
+
+
+    }
+
+    localStorage.setItem("csvData", JSON.stringify(csvData));
+
+    getData();
+    document.querySelector("input[name='chosenTransaction']").value = "";
+    document.querySelector("select[name='categoryList']").selectedIndex = 0;
+    document.querySelector("input[name='assignCategory']").value = "";
+
+}
+
+
+
+
+
+
 const seperateData = (itemName, amount, initialList) => {
+
+
+    document.querySelector("input[name='chosenTransaction']").value = itemName;
+
+
+
     let tempB = dataB;
     let tempA = dataA;
     let tempData = [];
     let tempMerge = [];
     let tempATotal = 0;
     let tempBTotal = 0;
+    let category = "default";
     if (initialList === "A") {
         for (let i = 0; i < tempA.length; i++) {
             if (itemName !== tempA[i].itemName) {
                 tempData.push(tempA[i]);
-                tempATotal = tempATotal + Number(tempA[i].amount)
+                tempATotal = tempATotal + Number(tempA[i].amount);
+                category = tempA[i].category;
             }
         }
-        tempMerge = [...dataB, { itemName, amount }];
+        tempMerge = [...dataB, { itemName, amount, category }];
         dataA = tempData;
         dataB = tempMerge;
 
@@ -395,13 +462,13 @@ const seperateData = (itemName, amount, initialList) => {
     let dataB_HTML = "";
     for (let i = 0; i < dataB.length; i++) {
         let funcB = ` onClick="javascript:seperateData('${dataB[i].itemName}',${dataB[i].amount},'B')" `;
-        dataB_HTML = dataB_HTML + "<button type='button' " + funcB + "  class='list-group-item list-group-item-action'>" + dataB[i].itemName + " : $" + dataB[i].amount + "</button>";
+        dataB_HTML = dataB_HTML + "<button type='button' " + funcB + "  class='list-group-item list-group-item-action' data-num='" + i + "' data-category='" + dataB[i].category + "'>" + dataB[i].itemName + " : $" + dataB[i].amount + "</button>";
     }
     document.getElementById("dataB").innerHTML = dataB_HTML;
     let dataA_HTML = "";
     for (let i = 0; i < dataA.length; i++) {
         let funcA = ` onClick="javascript:seperateData('${dataA[i].itemName}',${dataA[i].amount}, 'A')" `;
-        dataA_HTML = dataA_HTML + "<button type='button' " + funcA + "  class='list-group-item list-group-item-action'>" + dataA[i].itemName + " : $" + dataA[i].amount + "</button>";
+        dataA_HTML = dataA_HTML + "<button type='button' " + funcA + "  class='list-group-item list-group-item-action'  data-num='" + i + "' data-category='" + dataA[i].category + "' >" + dataA[i].itemName + " : $" + dataA[i].amount + "</button>";
     }
     document.getElementById("dataA").innerHTML = dataA_HTML;
     //START A
