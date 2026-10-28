@@ -208,13 +208,15 @@ const buildObjects = (temp) => {
                     tempIncome.push({
                         id,
                         itemName: originalName + "(" + prepLine[0].substring(1, 11) + ")",
-                        amount
+                        amount,
+                        category: "default"
                     });
                 } else {
                     tempExpenses.push({
                         id,
                         itemName: originalName + "(" + prepLine[0].substring(1, 11) + ")",
-                        amount: (amount * -1)
+                        amount: (amount * -1),
+                        category: "default"
                     });
                 }
             }
@@ -224,12 +226,12 @@ const buildObjects = (temp) => {
     for (let i = 0; i < tempObj.length; i++) {
         for (let j = 0; j < tempIncome.length; j++) {
             if (tempObj[i].id === tempIncome[j].id) {
-                tempObj[i].monthYear[0].income.push({ itemName: tempIncome[j].itemName, amount: tempIncome[j].amount });
+                tempObj[i].monthYear[0].income.push({ itemName: tempIncome[j].itemName, amount: tempIncome[j].amount, category: "default" });
             }
         }
         for (let j = 0; j < tempExpenses.length; j++) {
             if (tempObj[i].id === tempExpenses[j].id) {
-                tempObj[i].monthYear[0].expenses.push({ itemName: tempExpenses[j].itemName, amount: tempExpenses[j].amount });
+                tempObj[i].monthYear[0].expenses.push({ itemName: tempExpenses[j].itemName, amount: tempExpenses[j].amount, category: "default" });
             }
         }
     }
