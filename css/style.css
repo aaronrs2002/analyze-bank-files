@@ -146,3 +146,13 @@ ul.numberedLi li {
     }
 
 }
+
+
+.list-group-item[data-category="default"] {
+    color: #842029;
+    background-color: #f8d7da !important;
+}
+
+#dataA button:disabled {
+    cursor: not-allowed;
+}

@@ -20,6 +20,21 @@ let bTotal = 0;
 let amounts = [Number(dataATotal), Number(dataBTotal)];
 let labels = [title + " List A", title + " List B"];
 
+let categoryValues = ["default", "streaming", "groceries", "home", "car", "fun", "services"];
+let categoryOptions = [
+    { value: "default", htmlTxt: "Assign category for selected item" },
+    { value: "streaming", htmlTxt: "Streaming Services" },
+    { value: "groceries", htmlTxt: "Groceries" },
+    { value: "home", htmlTxt: "Home" },
+    { value: "car", htmlTxt: "Car" },
+    { value: "fun", htmlTxt: "Fun Expenses" },
+    { value: "services", htmlTxt: "services" },
+];
+
+
+
+
+
 var options = {
     series: [],
     total: 0,
@@ -140,12 +155,78 @@ const getData = () => {
         let tempExpenseLabels = [];
         let tempExpenseAmounts = [];
         for (let i = 0; i < obj[0].expenses.length; i++) {
-            tempExpenseLabels.push(obj[0].expenses[i].itemName);
-            tempExpenseAmounts.push(Number(obj[0].expenses[i].amount));
+            if (tempExpenseLabels.indexOf(obj[0].expenses[i].category) === -1) {
+                tempExpenseLabels.push(obj[0].expenses[i].category);
+            }
+
+            /*
+            
+            let categoryValues = ["default", "streaming", "groceries","home","car","fun","services"];
+            let categoryOptions = [
+            
+             { value: "default", htmlTxt: "Assign category for selected item" },
+            
+            
+            */
+
+
+
+
+            if (categoryValues.indexOf(obj[0].expenses[i].category) === -1) {
+                categoryValues.push(obj[0].expenses[i].category);
+
+                categoryOptions.push({ value: obj[0].expenses[i].category, htmlTxt: obj[0].expenses[i].category });
+
+                //categoryListHTML = categoryListHTML + `<option value='${obj[0].expenses[i].itemName}'>${obj[0].expenses[i].itemName}</option>`
+            }
+
+
+
+
+
+
+
+
+
+
+            /****end new category functionality */
+
+            tempExpenseAmounts[tempExpenseLabels.indexOf(obj[0].expenses[i].category)] = (Number(tempExpenseAmounts[tempExpenseLabels.indexOf(obj[0].expenses[i].category)]) + Number(obj[0].expenses[i].amount))
+
+            // tempExpenseAmounts.push(Number(obj[0].expenses[i].amount));
         }
+        let categoryListHTML = "";
+
+
+        for (let i = 0; i < categoryOptions.length; i++) {
+
+
+            categoryListHTML = categoryListHTML + `<option value='${categoryOptions[i].value}'>${categoryOptions[i].htmlTxt}</option>`
+
+
+
+        }
+
+
+
+        document.querySelector("select[name='categoryList']").innerHTML = categoryListHTML;
+
+
+
         expenseLabels = tempExpenseLabels;
         expenseAmounts = tempExpenseAmounts;
-        sessionStorage.setItem("expenseAmounts", JSON.stringify(tempExpenseAmounts));
+
+        console.log("expenseLabels: " + expenseLabels + " - expenseAmounts: " + expenseAmounts);
+
+
+
+
+
+
+
+
+
+        //sessionStorage.setItem("expenseAmounts", JSON.stringify(tempExpenseAmounts));
         return false;
     }
     if (localStorage.getItem("csvData")) {
@@ -298,6 +379,7 @@ const handleOnSubmit = (type) => {
 };
 
 const buildListAmounts = (list) => {
+    console.log("JSON.stringify(list): " + JSON.stringify(list));
 
     try {
         if (list.length > 0) {
@@ -305,18 +387,66 @@ const buildListAmounts = (list) => {
             let tempList = [];
             let tempLabels = [];
             let tempAmounts = [];
+
+
+
+
             for (let i = 0; i < theList.length; i++) {
-                tempLabels.push(theList[i].itemName);
-                tempAmounts.push(theList[i].amount);
+                if (tempLabels.indexOf(theList[i].category) === -1) {
+                    tempLabels.push(theList[i].category);
+                    tempAmounts.push(0);
+                }
+                // tempLabels.push(theList[i].itemName);
+                let addTo = tempLabels.indexOf(theList[i].category);
+                tempAmounts[Number(addTo)] = (tempAmounts[Number(addTo)] + Number(theList[i].amount));
+                //tempAmounts.push(theList[i].amount);
             }
-            for (let i = 0; i < tempLabels.length; i++) {
-                tempList.push({ itemName: tempLabels[i], amount: tempAmounts[i] });
-            }
+            /*   for (let i = 0; i < tempLabels.length; i++) {
+                 tempList.push({ category: tempLabels[i], transactions: [] })
+                 //tempList.push({ itemName: tempLabels[i], amount: tempAmounts[i] });
+             }
+ 
+             for(let i=0;i<tempList.length;i++){
+                   if (tempList[i].category===)
+               }*/
+            console.log("tempLabels: " + tempLabels + " - tempAmounts: " + tempAmounts);
+
+
+
+            /****RENDER HERE */
+
+
+            chart.render();  // Firstly, prepare the ground
+            chart.updateOptions({
+                series: tempAmounts,
+                total: 0,
+                chart: {
+                    type: 'donut',
+                },
+                labels: tempLabels,
+                responsive: [{
+                    breakpoint: undefined,
+                    options: {
+                        chart: {
+                            width: "auto"
+                        },
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }]
+            }); // Secondly, draw we want
+            // chart.updateOptions(newOptions); Redraw we want
+
+
+
+            /********END RENDER */
+
             dataA = theList;
             let dataA_HTML = "";
             for (let i = 0; i < dataA.length; i++) {
-                let funcA = ` onClick="javascript:seperateData('${dataA[i].itemName}',${dataA[i].amount},'A')" `;
-                dataA_HTML = dataA_HTML + "<button type='button' " + funcA + "  class='list-group-item list-group-item-action'>" + dataA[i].itemName + " : $" + dataA[i].amount + "</button>";
+                let funcA = ` onClick="javascript:seperateData('${dataA[i].itemName}',${dataA[i].amount},'A', '${dataA[i].category}')" `;
+                dataA_HTML = dataA_HTML + "<button type='button' " + funcA + "  class='list-group-item list-group-item-action' data-num='" + i + "' data-category='" + dataA[i].category + "'>" + dataA[i].itemName + " : $" + dataA[i].amount + "</button>";
             }
             document.getElementById("dataA").innerHTML = dataA_HTML
             let tempInitialAmount = 0;
@@ -325,6 +455,10 @@ const buildListAmounts = (list) => {
             }
             initialAmount = tempInitialAmount;
             document.getElementById("initialAmount").innerHTML = initialAmount;
+
+            incomeLabels = tempLabels;
+            expenseLabels = tempLabels;
+
 
         }
 
@@ -347,12 +481,12 @@ const viewData = (viewFunc) => {
     prepForNewData();
     if (viewFunc === "expenses") {
         list = expenseList;
-        title = "Expense";
+        title = expenseLabels;
     } else {
         list = revenueList;
-        title = "Income";
+        title = incomeLabels
     }
-    options.labels = [title + " List A", title + " List B"];
+    options.labels = title;
     document.getElementById("viewFunction").innerHTML = viewFunc;
     [].forEach.call(document.querySelectorAll("button.btn[data-view]"), (e) => {
         e.classList.remove("active");
@@ -375,10 +509,56 @@ const populateCategory = () => {
     }
 }
 
+
 const updateCategory = () => {
 
     let selectedTransaction = document.querySelector("input[name='chosenTransaction']").value;
     let selectedCategory = document.querySelector("select[name='categoryList']").value;
+    let assignCategory = document.querySelector("input[name='assignCategory']").value;
+
+
+    /*
+    
+    
+                if (categoryValues.indexOf(obj[0].expenses[i].category) === -1) {
+                    categoryValues.push(obj[0].expenses[i].category);
+    
+                    categoryOptions.push({ value: obj[0].expenses[i].itemName, htmlTxt: obj[0].expenses[i].itemName });
+    
+                    //categoryListHTML = categoryListHTML + `<option value='${obj[0].expenses[i].itemName}'>${obj[0].expenses[i].itemName}</option>`
+                }
+    
+    
+                ----------
+    
+    
+                        let categoryListHTML = "";
+    
+    
+            for (let i = 0; i < categoryOptions.length; i++) {
+    
+    
+                categoryListHTML = categoryListHTML + `<option value='${categoryOptions[i].value}'>${categoryOptions[i].htmlTxt}</option>`
+    
+    
+    
+            }
+    
+    
+    */
+
+    categoryOptions.push({ value: assignCategory, htmlTxt: assignCategory });
+
+    let categoryListHTML = "";
+    for (let i = 0; i < categoryOptions.length; i++) {
+        categoryListHTML = categoryListHTML + `<option value='${categoryOptions[i].value}'>${categoryOptions[i].htmlTxt}</option>`
+    }
+
+
+    document.querySelector("select[name='categoryList']").innerHTML = categoryListHTML;
+
+
+
 
     let csvData = JSON.parse(localStorage.getItem("csvData"));
 
@@ -389,14 +569,16 @@ const updateCategory = () => {
             for (let s = 0; s < csvData[i].monthYear[j].income.length; s++) {
 
                 if (csvData[i].monthYear[j].income[s].itemName === selectedTransaction) {
-                    csvData[i].monthYear[j].income[s].category = selectedCategory;
+                    csvData[i].monthYear[j].income[s].category = assignCategory;
                 }
             }
 
             for (let s = 0; s < csvData[i].monthYear[j].expenses.length; s++) {
 
                 if (csvData[i].monthYear[j].expenses[s].itemName === selectedTransaction) {
-                    csvData[i].monthYear[j].expenses[s].category = selectedCategory;
+
+                    console.log("csvData[i].monthYear[j].expenses[s].itemName: " + csvData[i].monthYear[j].expenses[s].itemName + " to category " + assignCategory);
+                    csvData[i].monthYear[j].expenses[s].category = assignCategory;
                 }
             }
 
@@ -408,10 +590,23 @@ const updateCategory = () => {
 
     localStorage.setItem("csvData", JSON.stringify(csvData));
 
+    console.log("JSON.stringify(csvData): " + JSON.stringify(csvData));
+
     getData();
     document.querySelector("input[name='chosenTransaction']").value = "";
     document.querySelector("select[name='categoryList']").selectedIndex = 0;
     document.querySelector("input[name='assignCategory']").value = "";
+
+
+    [].forEach.call(document.querySelectorAll("#dataA button"), (e) => {
+        e.disabled = false;
+    });
+
+    document.getElementById("chart").innerHTML = "<h5 class='text-danger'>Select Expenses or income to reload your data.</h5>";
+    document.querySelector("input[name='chosenTransaction']").classList.remove("error");
+    document.querySelector("select[name='categoryList']").classList.remove("error");
+    document.querySelector("input[name='assignCategory']").classList.remove("error");
+
 
 }
 
@@ -420,10 +615,19 @@ const updateCategory = () => {
 
 
 
-const seperateData = (itemName, amount, initialList) => {
+const seperateData = (itemName, amount, initialList, category) => {
+
+    window.location = "#functionBts";
+    document.querySelector("input[name='chosenTransaction']").classList.add("error");
+    document.querySelector("select[name='categoryList']").classList.add("error");
+    document.querySelector("input[name='assignCategory']").classList.add("error");
 
 
     document.querySelector("input[name='chosenTransaction']").value = itemName;
+
+    // document.getElementById("dataA").disabled = true;
+
+
 
 
 
@@ -433,13 +637,15 @@ const seperateData = (itemName, amount, initialList) => {
     let tempMerge = [];
     let tempATotal = 0;
     let tempBTotal = 0;
-    let category = "default";
+    let categoryListB = [];
+    let listBAmounts = []
     if (initialList === "A") {
         for (let i = 0; i < tempA.length; i++) {
             if (itemName !== tempA[i].itemName) {
-                tempData.push(tempA[i]);
+
+                tempData.push({ itemName: tempA[i].itemName, amount: Number(tempA[i].amount), category: tempA[i].category });
                 tempATotal = tempATotal + Number(tempA[i].amount);
-                category = tempA[i].category;
+                // category = tempA[i].category;
             }
         }
         tempMerge = [...dataB, { itemName, amount, category }];
@@ -452,22 +658,32 @@ const seperateData = (itemName, amount, initialList) => {
     } else {
         for (let i = 0; i < tempB.length; i++) {
             if (itemName !== tempB[i].itemName) {
-                tempData.push(tempB[i])
+                categoryListB.push(tempA[i].category);
+                listBAmounts.push(0);
+                tempData.push({ itemName: tempA[i].itemName, amount: Number(tempA[i].amount), category: tempA[i].category });
+                // category = tempB[i].category;
             }
         }
-        tempMerge = [...dataA, { itemName, amount }];
+
+        for (let i = 0; i < tempB.length; i++) {
+            listBAmounts[categoryListB.indexOf(tempB[i].category)] = (Number(listBAmounts[categoryListB.indexOf(tempB[i].category)]) + Number(tempB[i].amount))
+        }
+
+
+        tempMerge = [...dataA, { itemName, amount, category }];
         dataA = tempMerge;
         dataB = tempData;
     }
+
     let dataB_HTML = "";
     for (let i = 0; i < dataB.length; i++) {
-        let funcB = ` onClick="javascript:seperateData('${dataB[i].itemName}',${dataB[i].amount},'B')" `;
+        let funcB = ` onClick="javascript:seperateData('${dataB[i].itemName}',${dataB[i].amount},'B', '${dataB[i].category}')" `;
         dataB_HTML = dataB_HTML + "<button type='button' " + funcB + "  class='list-group-item list-group-item-action' data-num='" + i + "' data-category='" + dataB[i].category + "'>" + dataB[i].itemName + " : $" + dataB[i].amount + "</button>";
     }
     document.getElementById("dataB").innerHTML = dataB_HTML;
     let dataA_HTML = "";
     for (let i = 0; i < dataA.length; i++) {
-        let funcA = ` onClick="javascript:seperateData('${dataA[i].itemName}',${dataA[i].amount}, 'A')" `;
+        let funcA = ` onClick="javascript:seperateData('${dataA[i].itemName}',${dataA[i].amount}, 'A', '${dataA[i].category}')" `;
         dataA_HTML = dataA_HTML + "<button type='button' " + funcA + "  class='list-group-item list-group-item-action'  data-num='" + i + "' data-category='" + dataA[i].category + "' >" + dataA[i].itemName + " : $" + dataA[i].amount + "</button>";
     }
     document.getElementById("dataA").innerHTML = dataA_HTML;
@@ -479,7 +695,7 @@ const seperateData = (itemName, amount, initialList) => {
     }
     dataATotal = tempDataATotal;
     document.getElementById("aTotal").innerHTML = dataATotal;
-    sessionStorage.setItem(title.toLowerCase() + "A", tempDataATotal);
+    //sessionStorage.setItem(title.toLowerCase() + "A", tempDataATotal);
     ///START B
     dataB = tempMerge;
     let tempDataBTotal = 0;
@@ -488,8 +704,8 @@ const seperateData = (itemName, amount, initialList) => {
     }
     dataBTotal = tempDataBTotal;
     document.getElementById("bTotal").innerHTML = dataBTotal;
-    sessionStorage.setItem(title.toLowerCase() + "B", dataBTotal);
-    amounts = [Number(dataATotal), Number(dataBTotal)];
+    // sessionStorage.setItem(title.toLowerCase() + "B", dataBTotal);
+    amounts = [Number(dataATotal), ...listBAmounts];
     document.getElementById("chart").innerHTML = "";
     options.total = parseInt(dataATotal) + parseInt(dataBTotal);
     options.series = amounts;
@@ -500,7 +716,7 @@ const seperateData = (itemName, amount, initialList) => {
         chart: {
             type: 'donut',
         },
-        labels: [title + " List A", title + " List B"],
+        labels: [title + " List A", ...categoryListB],
         responsive: [{
             breakpoint: undefined,
             options: {
@@ -514,6 +730,10 @@ const seperateData = (itemName, amount, initialList) => {
         }]
     }); // Secondly, draw we want
     // chart.updateOptions(newOptions); Redraw we want
+
+    [].forEach.call(document.querySelectorAll("#dataA button"), (e) => {
+        e.disabled = true;
+    });
 }
 /*END FUNCTIONALITY*/
 
