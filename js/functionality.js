@@ -526,11 +526,36 @@ const buildListAmounts = (list) => {
 
             dataA = theList;
             let dataA_HTML = "";
-            for (let i = 0; i < dataA.length; i++) {
-                let funcA = ` onClick="javascript:seperateData('${dataA[i].itemName}',${dataA[i].amount},'A', '${dataA[i].category}')" `;
-                dataA_HTML = dataA_HTML + "<button type='button' " + funcA + "  class='list-group-item list-group-item-action' data-num='" + i + "' data-category='" + dataA[i].category + "'>" + dataA[i].itemName + " : $" + dataA[i].amount + "</button>";
+            /*START CATEGORIES***/
+
+            for (let i = 0; i < tempLabels.length; i++) {
+                dataA_HTML = dataA_HTML + `<ul class="list-group" data-category="${tempLabels[i]}"><li class="list-group-item list-group-item-action list-group-item-primary">${tempLabels[i]} : $<span data-cattotal="${tempLabels[i]}">0</span></li></ul>`;
             }
+
+
             document.getElementById("dataA").innerHTML = dataA_HTML
+            /*END CATEGORIES*/
+
+
+
+
+
+
+            for (let i = 0; i < dataA.length; i++) {
+
+                let appendHTML = document.querySelector("ul[data-category='" + dataA[i].category + "']").innerHTML;
+
+                let categoryTotal = Number(document.querySelector("span[data-cattotal='" + dataA[i].category + "']").innerHTML);
+                categoryTotal = (Number(categoryTotal) + Number(dataA[i].amount));
+
+                let funcA = ` onClick="javascript:seperateData('${dataA[i].itemName}',${dataA[i].amount},'A', '${dataA[i].category}')" `;
+                appendHTML = appendHTML + "<button type='button' " + funcA + "  class='list-group-item list-group-item-action' data-num='" + i + "' data-category='" + dataA[i].category + "'>" + dataA[i].itemName + " : $" + dataA[i].amount + "</button>";
+
+                document.querySelector("ul[data-category='" + dataA[i].category + "']").innerHTML = appendHTML;
+                document.querySelector("span[data-cattotal='" + dataA[i].category + "']").innerHTML = categoryTotal;
+            }
+
+            //  document.getElementById("dataA").innerHTML = dataA_HTML
             let tempInitialAmount = 0;
             for (let i = 0; i < theList.length; i++) {
                 tempInitialAmount = tempInitialAmount + Number(theList[i].amount);
