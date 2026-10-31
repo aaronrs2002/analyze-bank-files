@@ -515,7 +515,7 @@ const updateCategory = () => {
     let selectedTransaction = document.querySelector("input[name='chosenTransaction']").value;
     let selectedCategory = document.querySelector("select[name='categoryList']").value;
     let assignCategory = document.querySelector("input[name='assignCategory']").value;
-    assignCategory = assignCategory.toLowersCase();
+    assignCategory = assignCategory.toLowerCase();
 
 
     /*
