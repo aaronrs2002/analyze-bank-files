@@ -529,7 +529,7 @@ const buildListAmounts = (list) => {
             /*START CATEGORIES***/
 
             for (let i = 0; i < tempLabels.length; i++) {
-                dataA_HTML = dataA_HTML + `<ul class="list-group" data-category="${tempLabels[i]}"><li class="list-group-item list-group-item-action list-group-item-primary">${tempLabels[i]} : $<span data-cattotal="${tempLabels[i]}">0</span></li></ul>`;
+                dataA_HTML = dataA_HTML + `<ul class="list-group" data-category="${tempLabels[i]}"><li class="list-group-item list-group-item-action list-group-item-primary">${tempLabels[i]} : $<span data-cattotal="${tempLabels[i]}">0</span> - Percent of Total: <span data-percent="${tempLabels[i]}">0</span>%</li></ul>`;
             }
 
 
@@ -545,9 +545,12 @@ const buildListAmounts = (list) => {
 
                 let appendHTML = document.querySelector("ul[data-category='" + dataA[i].category + "']").innerHTML;
 
-                let categoryTotal = Number(document.querySelector("span[data-cattotal='" + dataA[i].category + "']").innerHTML);
-                categoryTotal = (Number(categoryTotal) + Number(dataA[i].amount));
 
+                let categoryTotal = Number(document.querySelector("span[data-cattotal='" + dataA[i].category + "']").innerHTML);
+
+
+                categoryTotal = (categoryTotal + dataA[i].amount);
+                categoryTotal = categoryTotal.toString().substring(0, 12);
                 let funcA = ` onClick="javascript:seperateData('${dataA[i].itemName}',${dataA[i].amount},'A', '${dataA[i].category}')" `;
                 appendHTML = appendHTML + "<button type='button' " + funcA + "  class='list-group-item list-group-item-action' data-num='" + i + "' data-category='" + dataA[i].category + "'>" + dataA[i].itemName + " : $" + dataA[i].amount + "</button>";
 
@@ -565,6 +568,30 @@ const buildListAmounts = (list) => {
 
             incomeLabels = tempLabels;
             expenseLabels = tempLabels;
+
+
+
+
+
+
+
+
+            [].forEach.call(document.querySelectorAll("span[data-cattotal]"), (e) => {
+
+                let totalForCat = Number(e.innerHTML);
+                let whichCat = e.dataset.cattotal;
+
+                let catPercentage = ((totalForCat / initialAmount) * 100);
+
+                catPercentage = catPercentage.toString().substring(0, 6);
+
+                document.querySelector("span[data-percent='" + whichCat + "']").innerHTML = catPercentage;
+
+                /*let categoryTotal = Number(document.querySelector("span[data-cattotal='" + dataA[i].category + "']").innerHTML);
+            
+            
+                document.querySelector("span[data-percent='" + dataA[i].category + "']").innerHTML = (categoryTotal);*/
+            });
 
 
         }
