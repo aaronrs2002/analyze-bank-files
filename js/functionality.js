@@ -546,8 +546,10 @@ const updateCategory = () => {
     
     
     */
+    if (categoryValues.indexOf(assignCategory) === -1) {
+        categoryOptions.push({ value: assignCategory, htmlTxt: assignCategory });
 
-    categoryOptions.push({ value: assignCategory, htmlTxt: assignCategory });
+    }
 
     let categoryListHTML = "";
     for (let i = 0; i < categoryOptions.length; i++) {
