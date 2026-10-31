@@ -515,6 +515,7 @@ const updateCategory = () => {
     let selectedTransaction = document.querySelector("input[name='chosenTransaction']").value;
     let selectedCategory = document.querySelector("select[name='categoryList']").value;
     let assignCategory = document.querySelector("input[name='assignCategory']").value;
+    assignCategory = assignCategory.toLowersCase();
 
 
     /*
@@ -545,7 +546,7 @@ const updateCategory = () => {
             }
     
     
-    */
+   
     if (categoryValues.indexOf(assignCategory) === -1) {
         categoryOptions.push({ value: assignCategory, htmlTxt: assignCategory });
 
@@ -558,7 +559,7 @@ const updateCategory = () => {
 
 
     document.querySelector("select[name='categoryList']").innerHTML = categoryListHTML;
-
+ */
 
 
 
