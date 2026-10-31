@@ -19,6 +19,34 @@ let aTotal = 0;
 let bTotal = 0;
 let amounts = [Number(dataATotal), Number(dataBTotal)];
 let labels = [title + " List A", title + " List B"];
+let autoChooseCategories = [{ hasText: "COFFEE", category: "coffee" },
+{ hasText: "COFFEE", category: "coffee" },
+{ hasText: "REPLENISH SAVINGS", category: "emergency-savings" },
+{ hasText: "SMOKE", category: "fun" },
+{ hasText: "VAPE", category: "fun" },
+{ hasText: "APPLE", category: "streaming" },
+{ hasText: "NETFLIX", category: "streaming" },
+{ hasText: "Hulu", category: "streaming" },
+{ hasText: "MICROSOFT*CONSOLE", category: "streaming" },
+{ hasText: "PARAMOUNT", category: "streaming" },
+{ hasText: "Primo Water", category: "groceries" },
+{ hasText: "CONVENIENT CORNER", category: "fun" },
+{ hasText: "ANIMAL HOSP", category: "dogs" },
+{ hasText: "EOS FIT", category: "fitness" },
+{ hasText: "HOMEDEPOT", category: "home" },
+{ hasText: "AMAZON RETA", category: "groceries" },
+{ hasText: "GREAT CLIPS", category: "services" },
+{ hasText: "SUPER CUTS", category: "services" },
+{ hasText: "BLACK ROCK COF", category: "coffee" },
+{ hasText: "CHEBA HUT", category: "restaurant" },
+{ hasText: "TEXAS ROADHOUSEF", category: "restaurant" },
+
+
+
+
+
+
+];
 
 let categoryValues = ["default", "streaming", "groceries", "home", "car", "fun", "services"];
 let categoryOptions = [
@@ -273,6 +301,19 @@ const buildObjects = (temp) => {
             let originalName = prepLine[1].replace(/[&\/\\'"“]/g, '');
             originalName = originalName.substring(0, originalName.length);
 
+            let autoAssignCat = "default";
+
+            for (let i = 0; i < autoChooseCategories.length; i++) {
+                if (originalName.indexOf(autoChooseCategories[i].hasText) !== -1) {
+
+                    //console.log("UPDATED originalName: " + originalName + " - autoChooseCategories[i].hasText: " + autoChooseCategories[i].hasText + " - category updated to: " + autoChooseCategories[i].category);
+
+                    autoAssignCat = autoChooseCategories[i].category;
+
+                }
+
+            }
+
             if ((typeof Number(originalPrice)) === "number") {
 
 
@@ -290,14 +331,14 @@ const buildObjects = (temp) => {
                         id,
                         itemName: originalName + "(" + prepLine[0].substring(1, 11) + ")",
                         amount,
-                        category: "default"
+                        category: autoAssignCat
                     });
                 } else {
                     tempExpenses.push({
                         id,
                         itemName: originalName + "(" + prepLine[0].substring(1, 11) + ")",
                         amount: (amount * -1),
-                        category: "default"
+                        category: autoAssignCat
                     });
                 }
             }
@@ -307,12 +348,42 @@ const buildObjects = (temp) => {
     for (let i = 0; i < tempObj.length; i++) {
         for (let j = 0; j < tempIncome.length; j++) {
             if (tempObj[i].id === tempIncome[j].id) {
-                tempObj[i].monthYear[0].income.push({ itemName: tempIncome[j].itemName, amount: tempIncome[j].amount, category: "default" });
+
+
+                let autoAssignCat = "default";
+
+                for (let s = 0; s < autoChooseCategories.length; s++) {
+                    if (tempIncome[j].itemName.indexOf(autoChooseCategories[s].hasText) !== -1) {
+
+                        autoAssignCat = autoChooseCategories[s].category;
+                        // console.log("UPDATED autoAssignCat: " + autoAssignCat + " - FOR ITEM: " + tempIncome[j].itemName);
+
+                    }
+
+
+                }
+
+
+                tempObj[i].monthYear[0].income.push({ itemName: tempIncome[j].itemName, amount: tempIncome[j].amount, category: autoAssignCat });
             }
         }
         for (let j = 0; j < tempExpenses.length; j++) {
             if (tempObj[i].id === tempExpenses[j].id) {
-                tempObj[i].monthYear[0].expenses.push({ itemName: tempExpenses[j].itemName, amount: tempExpenses[j].amount, category: "default" });
+
+
+
+                let autoAssignCat = "default";
+
+                for (let s = 0; s < autoChooseCategories.length; s++) {
+                    if (tempExpenses[j].itemName.indexOf(autoChooseCategories[s].hasText) !== -1) {
+
+                        autoAssignCat = autoChooseCategories[s].category;
+                        // console.log("UPDATED autoAssignCat: " + autoAssignCat + " - FOR ITEM: " + tempExpenses[j].itemName);
+
+                    }
+
+                }
+                tempObj[i].monthYear[0].expenses.push({ itemName: tempExpenses[j].itemName, amount: tempExpenses[j].amount, category: autoAssignCat });
             }
         }
     }
