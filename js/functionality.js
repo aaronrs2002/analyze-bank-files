@@ -41,12 +41,14 @@ let autoChooseCategories = [{ hasText: "COFFEE", category: "coffee" },
 { hasText: "CHEBA HUT", category: "restaurant" },
 { hasText: "TEXAS ROADHOUSEF", category: "restaurant" },
 
-
-
-
-
-
 ];
+
+if (localStorage.getItem("transactionCategories")) {
+    autoChooseCategories = [...autoChooseCategories, ...JSON.parse(localStorage.getItem("transactionCategories"))];
+}
+
+
+console.log("JSON.stringify(autoChooseCategories): " + JSON.stringify(autoChooseCategories));
 
 let categoryValues = ["default", "streaming", "groceries", "home", "car", "fun", "services"];
 let categoryOptions = [
@@ -238,6 +240,9 @@ const getData = () => {
 
 
         document.querySelector("select[name='categoryList']").innerHTML = categoryListHTML;
+        document.querySelector("select[name='categoryListFromKeyWord']").innerHTML = categoryListHTML;
+
+
 
 
 
@@ -275,6 +280,12 @@ const getData = () => {
 
 
 const buildObjects = (temp) => {
+
+
+    if (localStorage.getItem("transactionCategories")) {
+        autoChooseCategories = JSON.parse(localStorage.getItem("transactionCategories"));
+    }
+
     let tempObj = [];
     let tempIncome = [];
     let tempExpenses = [];
@@ -304,7 +315,7 @@ const buildObjects = (temp) => {
             let autoAssignCat = "default";
 
             for (let i = 0; i < autoChooseCategories.length; i++) {
-                if (originalName.indexOf(autoChooseCategories[i].hasText) !== -1) {
+                if (originalName.toLowerCase().indexOf(autoChooseCategories[i].hasText.toLowerCase()) !== -1) {
 
                     //console.log("UPDATED originalName: " + originalName + " - autoChooseCategories[i].hasText: " + autoChooseCategories[i].hasText + " - category updated to: " + autoChooseCategories[i].category);
 
@@ -353,7 +364,7 @@ const buildObjects = (temp) => {
                 let autoAssignCat = "default";
 
                 for (let s = 0; s < autoChooseCategories.length; s++) {
-                    if (tempIncome[j].itemName.indexOf(autoChooseCategories[s].hasText) !== -1) {
+                    if (tempIncome[j].itemName.toLowerCase().indexOf(autoChooseCategories[s].hasText.toLowerCase()) !== -1) {
 
                         autoAssignCat = autoChooseCategories[s].category;
                         // console.log("UPDATED autoAssignCat: " + autoAssignCat + " - FOR ITEM: " + tempIncome[j].itemName);
@@ -375,7 +386,7 @@ const buildObjects = (temp) => {
                 let autoAssignCat = "default";
 
                 for (let s = 0; s < autoChooseCategories.length; s++) {
-                    if (tempExpenses[j].itemName.indexOf(autoChooseCategories[s].hasText) !== -1) {
+                    if (tempExpenses[j].itemName.toLowerCase().indexOf(autoChooseCategories[s].hasText.toLowerCase()) !== -1) {
 
                         autoAssignCat = autoChooseCategories[s].category;
                         // console.log("UPDATED autoAssignCat: " + autoAssignCat + " - FOR ITEM: " + tempExpenses[j].itemName);
@@ -567,25 +578,77 @@ const viewData = (viewFunc) => {
 }
 
 
-const populateCategory = () => {
-    let selectedCategory = document.querySelector("select[name='categoryList']").value;
-    if (selectedCategory === "default") {
-        return false;
+const populateCategory = (whichInput) => {
+
+
+    if (whichInput === "addKeyWord") {
+        let selectedCategory = document.querySelector("select[name='categoryListFromKeyWord']").value;
+
+
+        if (selectedCategory === "default") {
+            return false;
+        } else {
+            document.querySelector("input[name='assignCategoryFromKeyWord']").value = selectedCategory;
+        }
+        let newKeyWord = document.querySelector("input[name='" + whichInput + "']").value;
+        if (newKeyWord.length === 0) {
+            return false;
+        }
+
     } else {
-        document.querySelector("input[name='assignCategory']").value = selectedCategory;
+
+        let selectedCategory = document.querySelector("select[name='categoryList']").value;
+        if (selectedCategory === "default") {
+            return false;
+        } else {
+            document.querySelector("input[name='assignCategory']").value = selectedCategory;
+        }
+        let selectedTransaction = document.querySelector("input[name='chosenTransaction']").value;
+        if (selectedTransaction.length === 0) {
+            return false;
+        }
     }
-    let selectedTransaction = document.querySelector("input[name='chosenTransaction']").value;
-    if (selectedTransaction.length === 0) {
-        return false;
-    }
+
+
+
+
+
+
+
 }
 
 
-const updateCategory = () => {
+
+const addKeyWord = () => {
+
+    if (localStorage.getItem("transactionCategories")) {
+        autoChooseCategories = JSON.parse(localStorage.getItem("transactionCategories"));
+    }
+
+    let keyWord = document.querySelector("input[name='addKeyWord']").value;
+    let selectedCategory = document.querySelector("select[name='categoryListFromKeyWord']").value;
+    let assignCategory = document.querySelector("input[name='assignCategoryFromKeyWord']").value;
+
+    autoChooseCategories.push({ hasText: keyWord, category: assignCategory });
+
+    console.log("PUSHED: " + keyWord + " - to category: " + assignCategory)
+
+    localStorage.setItem("transactionCategories", JSON.stringify(autoChooseCategories));
+}
+
+
+
+
+
+const updateCategory = (whichInput) => {
 
     let selectedTransaction = document.querySelector("input[name='chosenTransaction']").value;
     let selectedCategory = document.querySelector("select[name='categoryList']").value;
     let assignCategory = document.querySelector("input[name='assignCategory']").value;
+
+
+    //document.querySelector("select[name='categoryListFromKeyWord']").innerHTML = categoryListHTML;
+
     assignCategory = assignCategory.toLowerCase();
 
 

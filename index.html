@@ -126,11 +126,16 @@
                   select dropdown menu. After adding item to category, select "Expenses" or "Income" above to reload the
                   data with your update.
                 </i></p>
+            </div>
+            <div class="col-md-6">
               <ul class="list-unstyled">
+                <h3>Assign categories to transaction</h3>
+                <h5>Transaction Title:</h5>
                 <input type="text" name="chosenTransaction" placeholder="Transaction title" class="form-control"
                   disabled />
-                <li>Add/Edit Category</li>
-                <li><select class="form-control" name="categoryList" onChange="populateCategory()">
+                <li>
+                  <h5>Add/Edit Category:</h5>
+                  <select class="form-control" name="categoryList" onChange="populateCategory('assignCategory')">
                     <option value="default">Assign category for selected item</option>
                     <option value="streaming">Streaming Services</option>
                     <option value="groceries">Groceries</option>
@@ -138,117 +143,162 @@
                     <option value="car">Car</option>
                     <option value="fun">Fun Expenses</option>
                     <option value="services">Services</option>
-                  </select></li>
-                <li><input type="text" name="assignCategory" placeholder="Type the name of the new category."
-                    class="form-control" /></li>
+                  </select>
+                </li>
                 <li>
-                  <button class="btn w-100 btn-success" onClick="updateCategory()">Add item to category</button>
+
+                  <h5>What category?</h5>
+                  <input type="text" name="assignCategory" placeholder="Type the name of the new category."
+                    class="form-control" />
+                </li>
+                <li>
+                  <button class="btn w-100 btn-success" onClick="updateCategory('assignCategory')">Add item to
+                    category</button>
                 </li>
               </ul>
             </div>
-            <div class="col-md-4">
-              <h3>List A</h3>
+            <div class="col-md-6">
+              <h3>Add key word to auto-assign categories upon upload.</h3>
+              <ul class="list-unstyled">
+                <li>
+                  <div id="categoryListTarget"></div>
+                </li>
+                <li>
 
-              <ul class="list-group" id="dataA">
-                <!-- {dataA !== [] ? dataA.map((item, i) => {
+                  <h5>Key word:</h5>
+                  <input type="text" placeholder="Add key word in transaction title" name="addKeyWord"
+                    class="form-control" />
+                </li>
+                <li>
+                  <h5>Assign Category:</h5>
+                  <select class="form-control" name="categoryListFromKeyWord"
+                    onChange="populateCategory('addKeyWord')"></select>
+                </li>
+                <li>
+                  <h5>What category?</h5>
+                  <input type="text" placeholder="What category?" name="assignCategoryFromKeyWord"
+                    class="form-control" />
+                </li>
+                <li>
+
+                  <button class="btn w-100 btn-success" onClick="addKeyWord()">Add key word and
+                    category</button>
+                </li>
+            </div>
+
+
+
+
+
+
+
+
+
+
+          </div>
+          <div class="col-md-4">
+            <h3>List A</h3>
+
+            <ul class="list-group" id="dataA">
+              <!-- {dataA !== [] ? dataA.map((item, i) => {
                     return (<button key={i} type="button" onClick={() => seperateData(item.itemName, item.amount, "A")} class="list-group-item list-group-item-action">{item.itemName + " : $" + item.amount}</button>)
                 }) : null}-->
-              </ul>
-              <ul class="list-unstyled">
-                <!--{dataBTotal !== 0 ? <li>Total: ${aTotal}</li> : null}
+            </ul>
+            <ul class="list-unstyled">
+              <!--{dataBTotal !== 0 ? <li>Total: ${aTotal}</li> : null}
                 {initialAmount ? <li>Initial Amount: ${initialAmount} </li> : null}-->
-                <li>Total: <span id="aTotal"></span></li>
-                <li>Initial Amount: $<span id="initialAmount"></span></li>
-              </ul>
+              <li>Total: <span id="aTotal"></span></li>
+              <li>Initial Amount: $<span id="initialAmount"></span></li>
+            </ul>
 
-            </div>
-            <div class="col-md-4">
-              <h3>List B</h3>
-              <ul class="list-group" id="dataB">
+          </div>
+          <div class="col-md-4">
+            <h3>List B</h3>
+            <ul class="list-group" id="dataB">
 
-                <!-- {dataB.length > 0 ? dataB.map((item, i) => {
+              <!-- {dataB.length > 0 ? dataB.map((item, i) => {
                     return (<button key={i} type="button" onClick={() => seperateData(item.itemName, item.amount, "B")} class="list-group-item list-group-item-action">{item.itemName + " : $" + item.amount}</button>)
                 }) : null}-->
 
-              </ul>
-              <ul class="list-unstyled">
-                <li>Total: $<span id="bTotal"></span></li>
+            </ul>
+            <ul class="list-unstyled">
+              <li>Total: $<span id="bTotal"></span></li>
 
-              </ul>
+            </ul>
 
-            </div>
-            <div class="col-md-4">
-              <div id="chart" data-chart="donut"></div>
-            </div>
+          </div>
+          <div class="col-md-4">
+            <div id="chart" data-chart="donut"></div>
+          </div>
+        </div>
+
+
+
+
+
+
+
+
+        <div class="col-md-12 py-2">
+
+          <div class="d-grid gap-2">
+            <button class="btn btn-info" onClick="javascript:toggle('rules')" type="button" data-toggle="default">View
+              Instructions</button>
+            <button class="btn btn-info hide" onClick="javascript:toggle('default')" type="button"
+              data-toggle="rules">Hide
+              Instructions</button>
           </div>
 
+          <div class="card hide" data-toggle="rules">
+            <div class="card-body">
+              <div class="row">
 
-
-
-
-
-
-
-          <div class="col-md-12 py-2">
-
-            <div class="d-grid gap-2">
-              <button class="btn btn-info" onClick="javascript:toggle('rules')" type="button" data-toggle="default">View
-                Instructions</button>
-              <button class="btn btn-info hide" onClick="javascript:toggle('default')" type="button"
-                data-toggle="rules">Hide
-                Instructions</button>
-            </div>
-
-            <div class="card hide" data-toggle="rules">
-              <div class="card-body">
-                <div class="row">
-
-                  <div class="col-md-6">
-                    <h5 class="card-title">Read CSV/ASCII bank files with this free JavaScript web application</h5>
-                    <p>Upload files to your browser's local storage for you to analyze. No APIs just a static JavaScript
-                      banking
-                      tool.</p>
-                    <label>Steps:</label>
-                    <ol class="list-numbered">
-                      <li>Click the "Choose File" button to browse your files</li>
-                      <li>Select your .csv file</li>
-                      <li>Click "IMPORT CSV"</li>
-                      <li>Ensure the year and month selection, at the top, are correct</li>
-                      <li>Select "Expenses" or "Income" to see your data</li>
-                    </ol>
-                    <p>Open source code:<br><a href="https://github.com/aaronrs2002/analyze-bank-files"
-                        target="_blank">https://github.com/aaronrs2002/analyze-bank-files</a></p>
-                    <p>ASCII delimited (a.k.a. comma delimited) is a much used exchange file format that is used and
-                      recognized
-                      by
-                      many database programs. An ASCII delimited file is a text file with the extension . csv. All
-                      fields of
-                      a
-                      record are on one line, separated typically by commas*.</p>
-                    <p>This is an open source free calculator</p>
-                  </div>
-
-                  <div class="col-md-6">
-
-
-                    <p>Instructions and code walk through:</p>
-                    <iframe width="90%" height="315" src="https://www.youtube.com/embed/lNk7VpwEJOY?si=9bQ9JxkPhT4McSa0"
-                      title="YouTube video player" frameborder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                  </div>
+                <div class="col-md-6">
+                  <h5 class="card-title">Read CSV/ASCII bank files with this free JavaScript web application</h5>
+                  <p>Upload files to your browser's local storage for you to analyze. No APIs just a static JavaScript
+                    banking
+                    tool.</p>
+                  <label>Steps:</label>
+                  <ol class="list-numbered">
+                    <li>Click the "Choose File" button to browse your files</li>
+                    <li>Select your .csv file</li>
+                    <li>Click "IMPORT CSV"</li>
+                    <li>Ensure the year and month selection, at the top, are correct</li>
+                    <li>Select "Expenses" or "Income" to see your data</li>
+                  </ol>
+                  <p>Open source code:<br><a href="https://github.com/aaronrs2002/analyze-bank-files"
+                      target="_blank">https://github.com/aaronrs2002/analyze-bank-files</a></p>
+                  <p>ASCII delimited (a.k.a. comma delimited) is a much used exchange file format that is used and
+                    recognized
+                    by
+                    many database programs. An ASCII delimited file is a text file with the extension . csv. All
+                    fields of
+                    a
+                    record are on one line, separated typically by commas*.</p>
+                  <p>This is an open source free calculator</p>
                 </div>
 
-              </div>
+                <div class="col-md-6">
 
+
+                  <p>Instructions and code walk through:</p>
+                  <iframe width="90%" height="315" src="https://www.youtube.com/embed/lNk7VpwEJOY?si=9bQ9JxkPhT4McSa0"
+                    title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+              </div>
 
             </div>
 
 
           </div>
+
+
         </div>
       </div>
     </div>
+  </div>
   </div>
 
   <div class="hide alert fadeInUp" role="alert" id="globalAlert"></div>
