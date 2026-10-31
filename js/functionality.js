@@ -634,6 +634,12 @@ const addKeyWord = () => {
     console.log("PUSHED: " + keyWord + " - to category: " + assignCategory)
 
     localStorage.setItem("transactionCategories", JSON.stringify(autoChooseCategories));
+
+    document.querySelector("input[name='addKeyWord']").value = "";
+    document.querySelector("select[name='categoryListFromKeyWord']").selectedIndex = 0;
+    document.querySelector("input[name='assignCategoryFromKeyWord']").value = "";
+
+    globalAlert("alert-success", "Success! Updates will appear next time you upload your CSV file/Bank Statement.");
 }
 
 
