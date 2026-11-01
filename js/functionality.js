@@ -694,6 +694,7 @@ const addKeyWord = () => {
     document.querySelector("input[name='assignCategoryFromKeyWord']").value = "";
 
     globalAlert("alert-success", "Success! Updates will appear next time you upload your CSV file/Bank Statement.");
+    document.querySelector("input[name='addKeyWord']").classList.remove("error");
 }
 
 
@@ -808,9 +809,19 @@ const updateCategory = (whichInput) => {
 }
 
 
+const seperateData = (itemName, amount, initialList, category) => {
+    window.location = "#functionBts";
+
+    document.querySelector("input[name='addKeyWord']").value = itemName;
+
+    document.querySelector("input[name='addKeyWord']").classList.add("error");
 
 
 
+
+}
+
+/*
 
 const seperateData = (itemName, amount, initialList, category) => {
 
@@ -932,7 +943,7 @@ const seperateData = (itemName, amount, initialList, category) => {
         e.disabled = true;
     });
 }
-/*END FUNCTIONALITY*/
+END FUNCTIONALITY*/
 
 function tadaRollover(element) {
     document.querySelector("[data-tada='" + element + "']").classList.add("tada");
@@ -952,8 +963,24 @@ function tadaRollout(element) {
 /*START UPLOAD DOWNLOAD*/
 
 
+function downloadAutoCatData() {
+    let tempData = [];
+    if (localStorage.getItem("transactionCategories")) {
+        tempData = JSON.parse(localStorage.getItem("transactionCategories"));
+    }
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([JSON.stringify(tempData, null, 2)], {
+        type: 'application/json'
+    }));
+    a.setAttribute("download", "localstorageAutoTransactionCategories.json");
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+
+/*
 const downloadAutoCatData = () => {
-    const data = [];
+    let data = [];
     if (localStorage.getItem('transactionCategories')) {
 
         data = JSON.stringify(localStorage.getItem('transactionCategories'), null, 4);
@@ -963,7 +990,9 @@ const downloadAutoCatData = () => {
     const link = document.createElement('a'); link.setAttribute('href', url);
     link.setAttribute('download', window.location.hostname + '-localstorageAutoCategorize.json'); link.click();
     URL.revokeObjectURL(url);
-}
+}*/
+
+
 
 
 //START FILE READER
