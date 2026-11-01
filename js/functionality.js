@@ -951,7 +951,11 @@ function tadaRollout(element) {
 
 
 const downloadAutoCatData = () => {
-    const data = JSON.stringify(localStorage.getItem('transactionCategories'), null, 4);
+    const data = [];
+    if (localStorage.getItem('transactionCategories')) {
+
+        data = JSON.stringify(localStorage.getItem('transactionCategories'), null, 4);
+    }
     const blob = new Blob([data], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a'); link.setAttribute('href', url);
