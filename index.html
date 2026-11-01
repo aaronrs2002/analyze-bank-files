@@ -190,9 +190,53 @@
 
 
 
+            <div class="col-md-6 py-2">
+              <h3>Download your filtering words and phrases</h3>
 
 
+              <ul class="list-unstyled">
+                <li>
 
+                  <button class="btn w-100 btn-info" onClick="downloadAutoCatData()">Download your auto categery
+                    data</button>
+                </li>
+              </ul>
+            </div>
+
+
+            <div class="col-md-6 py-2">
+              <div class="d-grid gap-2">
+
+                <h3>Upload your filtering words and phrases</h3>
+
+                <label class="custom-file-upload btn btn-light">
+                  <input type="file" name="importFileCAT" accept=".json"
+                    onChange="javascript:handleOnChangeCAT(event)" />
+                  <i class="fa fa-cloud-upload"></i> Select a "Auto categorizing words and phrases" file for upload.
+                </label>
+
+              </div>
+            </div>
+
+
+            <div class="col-md-12">
+              <div class="d-grid gap-2  py-2">
+                <button id="fileUpload" class="btn btn-danger hide"
+                  onClick="javascript:handleOnSubmitCAT(event, 'json','default')"><i class="fas fa-file-upload"></i>
+                  Upload New Key Word Data</button>
+              </div>
+              <div class="d-grid gap-2  py-2">
+                <button id="fileMerge" class="btn btn-warning hide"
+                  onClick="javascript:handleOnSubmitCAT(event, 'json','merge')"><i class="fas fa-file-upload"></i>
+                  Merge with current data</button>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="alert alert-light" role="alert"><i>This application runs off local storage in your
+                  browser.
+                  Remember to "download" your "wordFun" data before you clear your browser cache.</i></div>
+
+            </div>
 
 
 

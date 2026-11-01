@@ -947,3 +947,71 @@ function tadaRollout(element) {
 
 
 
+/*START UPLOAD DOWNLOAD*/
+
+
+const downloadAutoCatData = () => {
+    const data = JSON.stringify(localStorage.getItem('transactionCategories'), null, 4);
+    const blob = new Blob([data], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a'); link.setAttribute('href', url);
+    link.setAttribute('download', window.location.hostname + '-localstorageAutoCategorize.json'); link.click();
+    URL.revokeObjectURL(url);
+}
+
+
+//START FILE READER
+const fileReaderCAT = new FileReader();
+//let file;
+function handleOnChangeCAT(event) {
+    if (event.target.files[0]) {
+        file = event.target.files[0];
+        console.log("event.target.files[0]: " + JSON.stringify(event.target.files[0]));
+        document.querySelector("#fileUpload").classList.remove("hide");
+        document.querySelector("#fileMerge").classList.remove("hide");
+        globalAlert("alert-warning", `File selected. Select if you want to merge  with current data or not.`);
+    } else {
+        document.querySelector("#fileUpload").classList.add("hide");
+        document.querySelector("#fileMerge").classList.add("hide");
+    }
+};
+function handleOnSubmitCAT(event, type, merge) {
+    event.preventDefault();
+
+    if (file) {
+        fileReaderCAT.onload = function (event) {
+            const tempObj = event.target.result;
+            if (type === "json") {
+
+
+
+                if (merge === "default") {
+                    // localStorage.setItem("customDictionary", tempObj);    
+                    localStorage.setItem("transactionCategories", tempObj);
+                    //loadList();
+
+                } else {
+                    let tempCategories = [...JSON.parse(localStorage.getItem("transactionCategories")), ...JSON.parse(tempObj)];
+
+
+                    localStorage.setItem("transactionCategories", JSON.stringify(tempCategories));
+
+                    //loadList();
+
+
+                }
+            }
+            else {
+                console.log("That wasn't json.")
+            }
+        };
+        fileReaderCAT.readAsText(file);
+    }
+    document.querySelector("input[type='file']").value = "";
+    document.querySelector("#fileUpload").classList.add("hide");
+    document.querySelector("#fileMerge").classList.add("hide");
+    //  toggleEdit();
+
+    globalAlert("alert-success", "Your file was uploaded. Upload your bank statement/\".csv\" file to apply the changes. The changes are applied upon .csv file upload.");
+};
+/*END UPLOAD DOWNLOAD*/
