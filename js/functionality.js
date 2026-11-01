@@ -237,9 +237,11 @@ const getData = () => {
 
         }
 
+        if (document.querySelector("select[name='categoryList']")) {
 
+            document.querySelector("select[name='categoryList']").innerHTML = categoryListHTML;
+        }
 
-        document.querySelector("select[name='categoryList']").innerHTML = categoryListHTML;
         document.querySelector("select[name='categoryListFromKeyWord']").innerHTML = categoryListHTML;
 
 

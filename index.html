@@ -107,10 +107,12 @@
             <button class="btn btn-danger w-100" onClick="clearData()" alt="clearData">Clear Data</button>
           </div>
 
-          <div class="col-md-12 hide" id="functionBts">
+          <div class="col-md-12 py-3 hide" id="functionBts">
             <div class="btn-group block">
-              <button class="btn btn-primary" data-view="expenses" onClick="viewData('expenses')">Expenses</button>
-              <button class="btn btn-primary" data-view="income" onClick="viewData('income')">Income</button>
+              <button class="btn btn-primary" data-view="expenses" onClick="viewData('expenses')">View Itemized
+                Expenses</button>
+              <button class="btn btn-primary" data-view="income" onClick="viewData('income')">View Itemized
+                Income</button>
 
             </div>
           </div>
@@ -127,7 +129,7 @@
                   data with your update.
                 </i></p>
             </div>
-            <div class="col-md-6">
+            <!--<div class="col-md-6">
               <ul class="list-unstyled">
                 <h3>Assign categories to transaction</h3>
                 <h5>Transaction Title:</h5>
@@ -156,8 +158,8 @@
                     category</button>
                 </li>
               </ul>
-            </div>
-            <div class="col-md-6">
+            </div>-->
+            <div class="col-md-12">
               <h3>Add key word to auto-assign categories upon upload.</h3>
               <ul class="list-unstyled">
                 <li>
@@ -166,8 +168,10 @@
                 <li>
 
                   <h5>Key word:</h5>
-                  <input type="text" placeholder="Add key word in transaction title" name="addKeyWord"
-                    class="form-control" />
+                  <i>Copy paste something identifiable/unique that the transaction title has into this field and assign
+                    a category to the transation. Every transaction should have a category assigned to it. </i>
+                  <input type="text" placeholder="Add key word or words that are identifiable in the transaction title"
+                    name="addKeyWord" class="form-control" />
                 </li>
                 <li>
                   <h5>Assign Category:</h5>
@@ -190,98 +194,98 @@
 
 
 
-            <div class="col-md-6 py-2">
-              <h3>Download your filtering words and phrases</h3>
-
-
-              <ul class="list-unstyled">
-                <li>
-
-                  <button class="btn w-100 btn-info" onClick="downloadAutoCatData()">Download your auto categery
-                    data</button>
-                </li>
-              </ul>
-            </div>
-
-
-            <div class="col-md-6 py-2">
-              <div class="d-grid gap-2">
-
-                <h3>Upload your filtering words and phrases</h3>
-
-                <label class="custom-file-upload btn btn-light">
-                  <input type="file" name="importFileCAT" accept=".json"
-                    onChange="javascript:handleOnChangeCAT(event)" />
-                  <i class="fa fa-cloud-upload"></i> Select a "Auto categorizing words and phrases" file for upload.
-                </label>
-
-              </div>
-            </div>
-
-
-            <div class="col-md-12">
-              <div class="d-grid gap-2  py-2">
-                <button id="fileUpload" class="btn btn-danger hide"
-                  onClick="javascript:handleOnSubmitCAT(event, 'json','default')"><i class="fas fa-file-upload"></i>
-                  Upload New Key Word Data</button>
-              </div>
-              <div class="d-grid gap-2  py-2">
-                <button id="fileMerge" class="btn btn-warning hide"
-                  onClick="javascript:handleOnSubmitCAT(event, 'json','merge')"><i class="fas fa-file-upload"></i>
-                  Merge with current data</button>
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="alert alert-light" role="alert"><i>This application runs off local storage in your
-                  browser.
-                  Remember to "download" your "wordFun" data before you clear your browser cache.</i></div>
-
-            </div>
-          </div>
 
 
 
-          <div class="col-md-4">
-            <h3>List A</h3>
 
-            <ul class="list-group" id="dataA">
-              <!-- {dataA !== [] ? dataA.map((item, i) => {
+            <div class="col-md-4">
+              <h3>List A</h3>
+
+              <ul class="list-group" id="dataA">
+                <!-- {dataA !== [] ? dataA.map((item, i) => {
                     return (<button key={i} type="button" onClick={() => seperateData(item.itemName, item.amount, "A")} class="list-group-item list-group-item-action">{item.itemName + " : $" + item.amount}</button>)
                 }) : null}-->
-            </ul>
-            <ul class="list-unstyled">
-              <!--{dataBTotal !== 0 ? <li>Total: ${aTotal}</li> : null}
+              </ul>
+              <ul class="list-unstyled">
+                <!--{dataBTotal !== 0 ? <li>Total: ${aTotal}</li> : null}
                 {initialAmount ? <li>Initial Amount: ${initialAmount} </li> : null}-->
-              <li>Total: <span id="aTotal"></span></li>
-              <li>Initial Amount: $<span id="initialAmount"></span></li>
-            </ul>
+                <li>Total: <span id="aTotal"></span></li>
+                <li>Initial Amount: $<span id="initialAmount"></span></li>
+              </ul>
 
-          </div>
-          <div class="col-md-4">
-            <h3>List B</h3>
-            <ul class="list-group" id="dataB">
+            </div>
+            <div class="col-md-4">
+              <h3>List B</h3>
+              <ul class="list-group" id="dataB">
 
-              <!-- {dataB.length > 0 ? dataB.map((item, i) => {
+                <!-- {dataB.length > 0 ? dataB.map((item, i) => {
                     return (<button key={i} type="button" onClick={() => seperateData(item.itemName, item.amount, "B")} class="list-group-item list-group-item-action">{item.itemName + " : $" + item.amount}</button>)
                 }) : null}-->
 
-            </ul>
-            <ul class="list-unstyled">
-              <li>Total: $<span id="bTotal"></span></li>
+              </ul>
+              <ul class="list-unstyled">
+                <li>Total: $<span id="bTotal"></span></li>
 
-            </ul>
+              </ul>
 
+            </div>
+            <div class="col-md-4">
+              <div id="chart" data-chart="donut"></div>
+            </div>
           </div>
-          <div class="col-md-4">
-            <div id="chart" data-chart="donut"></div>
+
+
+
+
+
+          <div class="col-md-12 py-2">
+            <h3>Download your filtering words and phrases</h3>
+
+
+            <ul class="list-unstyled">
+              <li>
+
+                <button class="btn w-100 btn-info" onClick="downloadAutoCatData()">Download your auto categery
+                  data</button>
+              </li>
+            </ul>
+          </div>
+
+
+          <div class="col-md-12 py-2">
+            <div class="d-grid gap-2">
+
+              <h3>Upload your filtering words and phrases</h3>
+
+              <label class="custom-file-upload btn btn-light">
+                <input type="file" name="importFileCAT" accept=".json" onChange="javascript:handleOnChangeCAT(event)" />
+                <i class="fa fa-cloud-upload"></i> Select a "Auto categorizing words and phrases" file for upload.
+              </label>
+
+            </div>
+          </div>
+
+
+          <div class="col-md-12">
+            <div class="d-grid gap-2  py-2">
+              <button id="fileUpload" class="btn btn-danger hide"
+                onClick="javascript:handleOnSubmitCAT(event, 'json','default')"><i class="fas fa-file-upload"></i>
+                Upload New Key Word Data</button>
+            </div>
+            <div class="d-grid gap-2  py-2">
+              <button id="fileMerge" class="btn btn-warning hide"
+                onClick="javascript:handleOnSubmitCAT(event, 'json','merge')"><i class="fas fa-file-upload"></i>
+                Merge with current data</button>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="alert alert-light" role="alert"><i>This application runs off local storage in your
+                browser.
+                Remember to "download" your "auto organizing key word and phrases" data before you clear your browser
+                cache.</i></div>
+
           </div>
         </div>
-
-
-
-
-
-
 
 
         <div class="col-md-12 py-2">
