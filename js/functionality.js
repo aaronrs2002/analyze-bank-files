@@ -429,6 +429,7 @@ const handleOnChange = () => {
         console.log("file FAIL: " + file);
     }
 };
+
 const handleOnSubmit = (type) => {
 
     try {
@@ -680,6 +681,7 @@ const addKeyWord = () => {
     }
 
     let keyWord = document.querySelector("input[name='addKeyWord']").value;
+    let selectedTransaction = document.querySelector("input[name='addKeyWord']").dataset.original;
     let selectedCategory = document.querySelector("select[name='categoryListFromKeyWord']").value;
     let assignCategory = document.querySelector("input[name='assignCategoryFromKeyWord']").value;
 
@@ -695,70 +697,13 @@ const addKeyWord = () => {
 
     globalAlert("alert-success", "Success! Updates will appear next time you upload your CSV file/Bank Statement.");
     document.querySelector("input[name='addKeyWord']").classList.remove("error");
-}
 
-
-
-
-
-const updateCategory = (whichInput) => {
-
-    let selectedTransaction = document.querySelector("input[name='chosenTransaction']").value;
-    let selectedCategory = document.querySelector("select[name='categoryList']").value;
-    let assignCategory = document.querySelector("input[name='assignCategory']").value;
-
-
-    //document.querySelector("select[name='categoryListFromKeyWord']").innerHTML = categoryListHTML;
-
-    assignCategory = assignCategory.toLowerCase();
-
-
-    /*
-    
-    
-                if (categoryValues.indexOf(obj[0].expenses[i].category) === -1) {
-                    categoryValues.push(obj[0].expenses[i].category);
-    
-                    categoryOptions.push({ value: obj[0].expenses[i].itemName, htmlTxt: obj[0].expenses[i].itemName });
-    
-                    //categoryListHTML = categoryListHTML + `<option value='${obj[0].expenses[i].itemName}'>${obj[0].expenses[i].itemName}</option>`
-                }
-    
-    
-                ----------
-    
-    
-                        let categoryListHTML = "";
-    
-    
-            for (let i = 0; i < categoryOptions.length; i++) {
-    
-    
-                categoryListHTML = categoryListHTML + `<option value='${categoryOptions[i].value}'>${categoryOptions[i].htmlTxt}</option>`
-    
-    
-    
-            }
-    
-    
-   
-    if (categoryValues.indexOf(assignCategory) === -1) {
-        categoryOptions.push({ value: assignCategory, htmlTxt: assignCategory });
-
-    }
-
-    let categoryListHTML = "";
-    for (let i = 0; i < categoryOptions.length; i++) {
-        categoryListHTML = categoryListHTML + `<option value='${categoryOptions[i].value}'>${categoryOptions[i].htmlTxt}</option>`
-    }
-
-
-    document.querySelector("select[name='categoryList']").innerHTML = categoryListHTML;
- */
 
 
 
     let csvData = JSON.parse(localStorage.getItem("csvData"));
+
+
 
     for (let i = 0; i < csvData.length; i++) {
 
@@ -785,34 +730,100 @@ const updateCategory = (whichInput) => {
 
 
     }
-
     localStorage.setItem("csvData", JSON.stringify(csvData));
 
-    console.log("JSON.stringify(csvData): " + JSON.stringify(csvData));
-
     getData();
-    document.querySelector("input[name='chosenTransaction']").value = "";
-    document.querySelector("select[name='categoryList']").selectedIndex = 0;
-    document.querySelector("input[name='assignCategory']").value = "";
+    document.getElementById("chart").innerHTML = "";
+    window.location = "#dataLocation";
+    globalAlert("alert-success", "Your data has been re-loaded. View \"Expenses\" or \"Income\" from your selected month.");
+
+    //handleOnSubmit('csv');
+}
 
 
-    [].forEach.call(document.querySelectorAll("#dataA button"), (e) => {
-        e.disabled = false;
-    });
 
-    document.getElementById("chart").innerHTML = "<h5 class='text-danger'>Select Expenses or income to reload your data.</h5>";
-    document.querySelector("input[name='chosenTransaction']").classList.remove("error");
-    document.querySelector("select[name='categoryList']").classList.remove("error");
-    document.querySelector("input[name='assignCategory']").classList.remove("error");
+
+
+/*
+const updateCategory = (whichInput) => {
+
+let selectedTransaction = document.querySelector("input[name='addKeyWord']").value;
+let selectedCategory = document.querySelector("select[name='categoryList']").value;
+let assignCategory = document.querySelector("input[name='assignCategory']").value;
+
+
+//document.querySelector("select[name='categoryListFromKeyWord']").innerHTML = categoryListHTML;
+
+assignCategory = assignCategory.toLowerCase();
+
+
+ 
+ 
+
+
+
+
+let csvData = JSON.parse(localStorage.getItem("csvData"));
+
+for (let i = 0; i < csvData.length; i++) {
+
+    for (let j = 0; j < csvData[i].monthYear.length; j++) {
+
+        for (let s = 0; s < csvData[i].monthYear[j].income.length; s++) {
+
+            if (csvData[i].monthYear[j].income[s].itemName === selectedTransaction) {
+                csvData[i].monthYear[j].income[s].category = assignCategory;
+            }
+        }
+
+        for (let s = 0; s < csvData[i].monthYear[j].expenses.length; s++) {
+
+            if (csvData[i].monthYear[j].expenses[s].itemName === selectedTransaction) {
+
+                console.log("csvData[i].monthYear[j].expenses[s].itemName: " + csvData[i].monthYear[j].expenses[s].itemName + " to category " + assignCategory);
+                csvData[i].monthYear[j].expenses[s].category = assignCategory;
+            }
+        }
+
+
+    }
 
 
 }
 
 
+
+
+localStorage.setItem("csvData", JSON.stringify(csvData));
+
+console.log("JSON.stringify(csvData): " + JSON.stringify(csvData));
+
+getData();
+document.querySelector("input[name='chosenTransaction']").value = "";
+document.querySelector("select[name='categoryList']").selectedIndex = 0;
+document.querySelector("input[name='assignCategory']").value = "";
+
+
+[].forEach.call(document.querySelectorAll("#dataA button"), (e) => {
+    e.disabled = false;
+});
+
+document.getElementById("chart").innerHTML = "<h5 class='text-danger'>Select Expenses or income to reload your data.</h5>";
+document.querySelector("input[name='chosenTransaction']").classList.remove("error");
+document.querySelector("select[name='categoryList']").classList.remove("error");
+document.querySelector("input[name='assignCategory']").classList.remove("error");
+
+
+}
+ 
+*/
+
 const seperateData = (itemName, amount, initialList, category) => {
     window.location = "#functionBts";
 
     document.querySelector("input[name='addKeyWord']").value = itemName;
+    document.querySelector("input[name='addKeyWord']").dataset.original = itemName;
+
 
     document.querySelector("input[name='addKeyWord']").classList.add("error");
 
