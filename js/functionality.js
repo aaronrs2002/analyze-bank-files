@@ -675,15 +675,27 @@ const populateCategory = (whichInput) => {
 
 
 const addKeyWord = () => {
+    document.querySelector("input[name='addKeyWord']").classList.remove("error");
+    document.querySelector("input[name='assignCategoryFromKeyWord']").classList.remove("error");
 
     if (localStorage.getItem("transactionCategories")) {
         autoChooseCategories = JSON.parse(localStorage.getItem("transactionCategories"));
     }
 
     let keyWord = document.querySelector("input[name='addKeyWord']").value;
+    if (keyWord === "") {
+        globalAlert("alert-warning", "Please tell me which transaction you would like to affiliate with a category.");
+        document.querySelector("input[name='addKeyWord']").classList.add("error");
+        return;
+    }
     let selectedTransaction = document.querySelector("input[name='addKeyWord']").dataset.original;
     let selectedCategory = document.querySelector("select[name='categoryListFromKeyWord']").value;
     let assignCategory = document.querySelector("input[name='assignCategoryFromKeyWord']").value;
+    if (assignCategory === "") {
+        globalAlert("alert-warning", "Please tell me which category you would like to assign this \"key word/s\" to.");
+        document.querySelector("input[name='assignCategoryFromKeyWord']").classList.add("error");
+        return;
+    }
 
     autoChooseCategories.push({ hasText: keyWord, category: assignCategory });
 
