@@ -320,8 +320,10 @@ const buildObjects = (temp) => {
                 if (originalName.toLowerCase().indexOf(autoChooseCategories[i].hasText.toLowerCase()) !== -1) {
 
                     //console.log("UPDATED originalName: " + originalName + " - autoChooseCategories[i].hasText: " + autoChooseCategories[i].hasText + " - category updated to: " + autoChooseCategories[i].category);
+                    if (autoChooseCategories[i].category.length > 0) {
+                        autoAssignCat = autoChooseCategories[i].category;
+                    }
 
-                    autoAssignCat = autoChooseCategories[i].category;
 
                 }
 
@@ -464,7 +466,7 @@ const handleOnSubmit = (type) => {
 };
 
 const buildListAmounts = (list) => {
-    console.log("JSON.stringify(list): " + JSON.stringify(list));
+
 
     try {
         if (list.length > 0) {
@@ -477,6 +479,9 @@ const buildListAmounts = (list) => {
 
 
             for (let i = 0; i < theList.length; i++) {
+                if (theList[i].category === "") {
+                    theList[i].category = "default";
+                }
                 if (tempLabels.indexOf(theList[i].category) === -1) {
                     tempLabels.push(theList[i].category);
                     tempAmounts.push(0);
@@ -486,6 +491,8 @@ const buildListAmounts = (list) => {
                 tempAmounts[Number(addTo)] = (tempAmounts[Number(addTo)] + Number(theList[i].amount));
                 //tempAmounts.push(theList[i].amount);
             }
+
+            // console.log("JSON.stringify(list): " + JSON.stringify(list));
             /*   for (let i = 0; i < tempLabels.length; i++) {
                  tempList.push({ category: tempLabels[i], transactions: [] })
                  //tempList.push({ itemName: tempLabels[i], amount: tempAmounts[i] });
@@ -615,6 +622,9 @@ const buildListAmounts = (list) => {
 }
 
 const viewData = (viewFunc) => {
+
+
+
     prepForNewData();
     if (viewFunc === "expenses") {
         list = expenseList;
@@ -629,6 +639,8 @@ const viewData = (viewFunc) => {
         e.classList.remove("active");
     })
     document.querySelector("button.btn[data-view='" + viewFunc + "']").classList.add("active");
+
+
     buildListAmounts(list);
 }
 
@@ -688,7 +700,7 @@ const addKeyWord = () => {
         document.querySelector("input[name='addKeyWord']").classList.add("error");
         return;
     }
-    let selectedTransaction = document.querySelector("input[name='addKeyWord']").dataset.original;
+    let selectedTransaction = document.querySelector("input[name='addKeyWord']").value;
     let selectedCategory = document.querySelector("select[name='categoryListFromKeyWord']").value;
     let assignCategory = document.querySelector("input[name='assignCategoryFromKeyWord']").value;
     if (assignCategory === "") {
@@ -699,7 +711,7 @@ const addKeyWord = () => {
 
     autoChooseCategories.push({ hasText: keyWord, category: assignCategory });
 
-    console.log("PUSHED: " + keyWord + " - to category: " + assignCategory)
+    console.log("PUSHED: " + keyWord + " - to category: " + assignCategory);
 
     localStorage.setItem("transactionCategories", JSON.stringify(autoChooseCategories));
 
@@ -717,20 +729,23 @@ const addKeyWord = () => {
 
 
 
+
+
+
     for (let i = 0; i < csvData.length; i++) {
 
         for (let j = 0; j < csvData[i].monthYear.length; j++) {
 
             for (let s = 0; s < csvData[i].monthYear[j].income.length; s++) {
 
-                if (csvData[i].monthYear[j].income[s].itemName === selectedTransaction) {
+                if (csvData[i].monthYear[j].income[s].itemName.indexOf(selectedTransaction) !== -1) {
                     csvData[i].monthYear[j].income[s].category = assignCategory;
                 }
             }
 
             for (let s = 0; s < csvData[i].monthYear[j].expenses.length; s++) {
 
-                if (csvData[i].monthYear[j].expenses[s].itemName === selectedTransaction) {
+                if (csvData[i].monthYear[j].expenses[s].itemName.indexOf(selectedTransaction) !== -1) {
 
                     console.log("csvData[i].monthYear[j].expenses[s].itemName: " + csvData[i].monthYear[j].expenses[s].itemName + " to category " + assignCategory);
                     csvData[i].monthYear[j].expenses[s].category = assignCategory;
@@ -742,6 +757,8 @@ const addKeyWord = () => {
 
 
     }
+    console.log("JSON.stringify('csvData'): " + JSON.stringify(csvData));
+
     localStorage.setItem("csvData", JSON.stringify(csvData));
 
     getData();
